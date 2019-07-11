@@ -1,7 +1,7 @@
 ## Corefile-tool
 
 Corefile-tool is a command line tool which helps you to evaluate and migrate your CoreDNS Corefile Configuration.
-It uses the [CoreDNS migration tool library](https://github.com/coredns/corefile-migration/tree/master/migration).
+It uses the [CoreDNS migration tool library](https://github.com/coredns/corefile-migration/).
 
 ## Usage
 
