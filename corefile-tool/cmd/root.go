@@ -21,7 +21,7 @@ func CorefileTool() *cobra.Command {
 			    │ Easily Migrate your Corefile                             │
 			    │                                                          │
 			    │ Please give us feedback at:                              │
-			    │ https://github.com/coredns/deployment/issues             │
+			    │ https://github.com/coredns/corefile-migration/issues     │
 			    └──────────────────────────────────────────────────────────┘
 
 		`),
