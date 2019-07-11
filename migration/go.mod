@@ -1,3 +1,3 @@
-module github.com/coredns/deployment/kubernetes/migration
+module github.com/coredns/corefile-migration/migration
 
 go 1.12
