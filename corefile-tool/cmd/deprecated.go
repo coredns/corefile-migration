@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/coredns/deployment/kubernetes/migration"
+	"github.com/coredns/corefile-migration/migration"
 
 	"github.com/spf13/cobra"
 )
