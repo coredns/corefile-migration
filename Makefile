@@ -2,8 +2,8 @@ ARCH:=amd64 arm arm64 ppc64le s390x
 
 .PHONY: test
 test:
-	GO111MODULE=on go test -v ./migration/
-	GO111MODULE=on go test -v ./corefile-tool/
+	cd migration; GO111MODULE=on go test -v
+	cd corefile-tool; GO111MODULE=on go test -v
 
 .PHONY: build
 build:
