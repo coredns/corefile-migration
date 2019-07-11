@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/coredns/deployment/kubernetes/migration/corefile"
+	"github.com/coredns/corefile-migration/migration/corefile"
 )
 
 // Deprecated returns a list of deprecation notifications affecting the guven Corefile.  Notifications are returned for

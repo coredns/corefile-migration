@@ -2,7 +2,7 @@ package migration
 
 import (
 	"errors"
-	"github.com/coredns/deployment/kubernetes/migration/corefile"
+	"github.com/coredns/corefile-migration/migration/corefile"
 )
 
 type plugin struct {
