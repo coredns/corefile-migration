@@ -1,9 +1,8 @@
-# K8s/CoreDNS Corefile Migration Tools
+# CoreDNS Corefile Migration Tools
 
 This Go library provides a set of functions to help handle migrations of CoreDNS Corefiles to be compatible
-with new versions of CoreDNS.  The task of upgrading CoreDNS is the responsibility of a variety of Kubernetes
-management tools (e.g. kubeadm and others), and the precise behavior may be different for each one.  This
-library abstracts some basic helper functions that make this easier to implement.
+with new versions of CoreDNS.
+Not all plugins are suported by this tool. Currently only the kubernetes and related plugins are supported.
 
 ## Notifications
 
@@ -65,7 +64,7 @@ by this tool.
 
 `Default(k8sVersion, corefileStr string) bool`
 
-Default returns true if the Corefile is the default for a given version of Kubernetes.
+Default is a Kubernetes specific function that returns true if the Corefile is the default for a given version of Kubernetes.
 Or, if k8sVersion is empty, Default returns true if the Corefile is the default for any version of Kubernetes.
 
 
@@ -85,10 +84,10 @@ ValidVersions returns a list of all versions supported by this tool.
 
 ## Command Line Converter Example
 
-An example use of this library is provided [here](../corefile-tool/).
+An example use of this library is provided [here](corefile-tool/).
 
 
-## Kubernetes Cluster Managemnt Tool Usage
+## Example: Kubernetes Cluster Managemnt Tool Usage
 
 This is an example flow of how this library could be used by a Kubernetes cluster management tool to perform a
 Corefile migration during an upgrade...
