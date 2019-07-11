@@ -3,7 +3,7 @@ package corefile
 import (
 	"strings"
 
-	"github.com/coredns/deployment/kubernetes/migration/caddy"
+	"github.com/coredns/corefile-migration/migration/caddy"
 )
 
 type Corefile struct {
