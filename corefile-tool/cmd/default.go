@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"io"
 
 	"github.com/coredns/corefile-migration/migration"
 
@@ -9,7 +10,7 @@ import (
 )
 
 // NewDefaultCmd represents the default command
-func NewDefaultCmd() *cobra.Command {
+func NewDefaultCmd(out io.Writer) *cobra.Command {
 	defaultCmd := &cobra.Command{
 		Use:   "default",
 		Short: "default returns true if the Corefile is the default for a that version of Kubernetes. If the Kubernetes version is omitted, returns true if the Corefile is the default for any version.",
@@ -23,7 +24,7 @@ corefile-tool default --k8sversion 1.4.0 --corefile /path/to/Corefile`,
 			if err != nil {
 				return fmt.Errorf("error while checking if the Corefile is the default: %v \n", err)
 			}
-			fmt.Println(isDefault)
+			fmt.Fprintln(out, isDefault)
 
 			return nil
 		},

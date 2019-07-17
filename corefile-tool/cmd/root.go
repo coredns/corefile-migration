@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"io"
 	"io/ioutil"
 	"os"
 
@@ -10,7 +11,7 @@ import (
 )
 
 // CorefileTool represents the base command for the corefile-tool.
-func CorefileTool() *cobra.Command {
+func CorefileTool(out io.Writer) *cobra.Command {
 	rootCmd := &cobra.Command{
 		Use:   "corefile-tool",
 		Short: "A brief description of your application",
@@ -26,20 +27,20 @@ func CorefileTool() *cobra.Command {
 
 		`),
 	}
-	rootCmd.AddCommand(NewMigrateCmd())
-	rootCmd.AddCommand(NewDowngradeCmd())
-	rootCmd.AddCommand(NewDefaultCmd())
-	rootCmd.AddCommand(NewDeprecatedCmd())
-	rootCmd.AddCommand(NewUnsupportedCmd())
-	rootCmd.AddCommand(NewValidVersionsCmd())
-	rootCmd.AddCommand(NewReleasedCmd())
+	rootCmd.AddCommand(NewMigrateCmd(out))
+	rootCmd.AddCommand(NewDowngradeCmd(out))
+	rootCmd.AddCommand(NewDefaultCmd(out))
+	rootCmd.AddCommand(NewDeprecatedCmd(out))
+	rootCmd.AddCommand(NewUnsupportedCmd(out))
+	rootCmd.AddCommand(NewValidVersionsCmd(out))
+	rootCmd.AddCommand(NewReleasedCmd(out))
 
 	return rootCmd
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
 func Execute() {
-	if err := CorefileTool().Execute(); err != nil {
+	if err := CorefileTool(os.Stdout).Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}

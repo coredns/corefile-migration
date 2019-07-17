@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"io"
 
 	"github.com/coredns/corefile-migration/migration"
 
@@ -9,7 +10,7 @@ import (
 )
 
 // NewDeprecatedCmd represents the deprecated command
-func NewDeprecatedCmd() *cobra.Command {
+func NewDeprecatedCmd(out io.Writer) *cobra.Command {
 	deprecatedCmd := &cobra.Command{
 		Use:   "deprecated",
 		Short: "Deprecated returns a list of deprecated, removed, ignored and new default plugins or directives present in the Corefile.",
@@ -24,7 +25,7 @@ corefile-tool deprecated --from 1.4.0 --to 1.5.0 --corefile /path/to/Corefile`,
 				return fmt.Errorf("error while listing deprecated plugins: %v \n", err)
 			}
 			for _, dep := range deprecated {
-				fmt.Println(dep.ToString())
+				fmt.Fprintln(out, dep.ToString())
 			}
 			return nil
 		},

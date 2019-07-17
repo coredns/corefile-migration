@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"io"
 
 	"github.com/coredns/corefile-migration/migration"
 
@@ -9,7 +10,7 @@ import (
 )
 
 // NewReleasedCmd represents the released command
-func NewReleasedCmd() *cobra.Command {
+func NewReleasedCmd(out io.Writer) *cobra.Command {
 	releasedCmd := &cobra.Command{
 		Use:   "released",
 		Short: "Determines whether your Docker Image SHA of a CoreDNS release is valid or not",
@@ -18,9 +19,9 @@ func NewReleasedCmd() *cobra.Command {
 			result := migration.Released(image)
 
 			if result {
-				fmt.Println("The docker image SHA is valid")
+				fmt.Fprintln(out, "The docker image SHA is valid")
 			} else {
-				fmt.Println("The docker image SHA is invalid")
+				fmt.Fprintln(out, "The docker image SHA is invalid")
 			}
 		},
 	}
