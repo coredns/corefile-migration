@@ -90,6 +90,184 @@ func addToAllServerBlocks(sb *corefile.Server, newPlugin *corefile.Plugin) (*cor
 }
 
 var Versions = map[string]release{
+	"1.5.2": {
+		priorVersion:   "1.5.1",
+		dockerImageSHA: "586d15ec14911ee680ac9c5af20ff24b9d1412fbbf0e05862ee1f5c37baa65b2",
+		plugins: map[string]plugin{
+			"errors": {
+				options: map[string]option{
+					"consolidate": {},
+				},
+			},
+			"log": {
+				options: map[string]option{
+					"class": {},
+				},
+			},
+			"health": {},
+			"ready": {
+				status: newdefault,
+				add: func(c *corefile.Server) (*corefile.Server, error) {
+					return addToKubernetesServerBlocks(c, &corefile.Plugin{Name: "ready"})
+				},
+				downAction: removePlugin,
+			},
+			"autopath": {},
+			"kubernetes": {
+				options: map[string]option{
+					"resyncperiod": {
+						status: deprecated,
+						action: removeOption,
+					},
+					"endpoint": {
+						status: ignored,
+						action: useFirstArgumentOnly,
+					},
+					"tls":                {},
+					"kubeconfig":         {},
+					"namespaces":         {},
+					"labels":             {},
+					"pods":               {},
+					"endpoint_pod_names": {},
+					"upstream": {
+						status: ignored,
+						action: removeOption,
+					},
+					"ttl":         {},
+					"noendpoints": {},
+					"transfer":    {},
+					"fallthrough": {},
+					"ignore":      {},
+				},
+			},
+			"k8s_external": {
+				options: map[string]option{
+					"apex": {},
+					"ttl":  {},
+				},
+			},
+			"prometheus": {},
+			"proxy": {
+				status:     removed,
+				replacedBy: "forward",
+				action:     proxyToForwardPluginAction,
+				options:    proxyToForwardOptionsMigrations,
+			},
+			"forward": {
+				options: map[string]option{
+					"except":         {},
+					"force_tcp":      {},
+					"prefer_udp":     {},
+					"expire":         {},
+					"max_fails":      {},
+					"tls":            {},
+					"tls_servername": {},
+					"policy":         {},
+					"health_check":   {},
+				},
+			},
+			"cache": {
+				options: map[string]option{
+					"success":  {},
+					"denial":   {},
+					"prefetch": {},
+				},
+			},
+			"loop":        {},
+			"reload":      {},
+			"loadbalance": {},
+		},
+		postProcess: breakForwardStubDomainsIntoServerBlocks,
+	},
+	"1.5.1": {
+		priorVersion:   "1.5.0",
+		dockerImageSHA: "451817637035535ae1fc8639753b453fa4b781d0dea557d5da5cb3c131e62ef5",
+		plugins: map[string]plugin{
+			"errors": {
+				options: map[string]option{
+					"consolidate": {},
+				},
+			},
+			"log": {
+				options: map[string]option{
+					"class": {},
+				},
+			},
+			"health": {},
+			"ready": {
+				status: newdefault,
+				add: func(c *corefile.Server) (*corefile.Server, error) {
+					return addToKubernetesServerBlocks(c, &corefile.Plugin{Name: "ready"})
+				},
+				downAction: removePlugin,
+			},
+			"autopath": {},
+			"kubernetes": {
+				options: map[string]option{
+					"resyncperiod": {
+						status: deprecated,
+						action: removeOption,
+					},
+					"endpoint": {
+						status: ignored,
+						action: useFirstArgumentOnly,
+					},
+					"tls":                {},
+					"kubeconfig":         {},
+					"namespaces":         {},
+					"labels":             {},
+					"pods":               {},
+					"endpoint_pod_names": {},
+					"upstream": {
+						status: ignored,
+						action: removeOption,
+					},
+					"ttl":         {},
+					"noendpoints": {},
+					"transfer":    {},
+					"fallthrough": {},
+					"ignore":      {},
+				},
+			},
+			"k8s_external": {
+				options: map[string]option{
+					"apex": {},
+					"ttl":  {},
+				},
+			},
+			"prometheus": {},
+			"proxy": {
+				status:     removed,
+				replacedBy: "forward",
+				action:     proxyToForwardPluginAction,
+				options:    proxyToForwardOptionsMigrations,
+			},
+			"forward": {
+				options: map[string]option{
+					"except":         {},
+					"force_tcp":      {},
+					"prefer_udp":     {},
+					"expire":         {},
+					"max_fails":      {},
+					"tls":            {},
+					"tls_servername": {},
+					"policy":         {},
+					"health_check":   {},
+				},
+			},
+			"cache": {
+				options: map[string]option{
+					"success":  {},
+					"denial":   {},
+					"prefetch": {},
+				},
+			},
+			"loop":        {},
+			"reload":      {},
+			"loadbalance": {},
+		},
+		postProcess: breakForwardStubDomainsIntoServerBlocks,
+	},
 	"1.5.0": {
 		priorVersion:   "1.4.0",
 		dockerImageSHA: "e83beb5e43f8513fa735e77ffc5859640baea30a882a11cc75c4c3244a737d3c",
