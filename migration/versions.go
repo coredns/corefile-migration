@@ -147,12 +147,6 @@ var Versions = map[string]release{
 				},
 			},
 			"prometheus": {},
-			"proxy": {
-				status:     removed,
-				replacedBy: "forward",
-				action:     proxyToForwardPluginAction,
-				options:    proxyToForwardOptionsMigrations,
-			},
 			"forward": {
 				options: map[string]option{
 					"except":         {},
@@ -177,9 +171,9 @@ var Versions = map[string]release{
 			"reload":      {},
 			"loadbalance": {},
 		},
-		postProcess: breakForwardStubDomainsIntoServerBlocks,
 	},
 	"1.5.1": {
+		nextVersion:    "1.5.2",
 		priorVersion:   "1.5.0",
 		dockerImageSHA: "451817637035535ae1fc8639753b453fa4b781d0dea557d5da5cb3c131e62ef5",
 		plugins: map[string]plugin{
@@ -236,12 +230,6 @@ var Versions = map[string]release{
 				},
 			},
 			"prometheus": {},
-			"proxy": {
-				status:     removed,
-				replacedBy: "forward",
-				action:     proxyToForwardPluginAction,
-				options:    proxyToForwardOptionsMigrations,
-			},
 			"forward": {
 				options: map[string]option{
 					"except":         {},
@@ -266,9 +254,9 @@ var Versions = map[string]release{
 			"reload":      {},
 			"loadbalance": {},
 		},
-		postProcess: breakForwardStubDomainsIntoServerBlocks,
 	},
 	"1.5.0": {
+		nextVersion:    "1.5.1",
 		priorVersion:   "1.4.0",
 		dockerImageSHA: "e83beb5e43f8513fa735e77ffc5859640baea30a882a11cc75c4c3244a737d3c",
 		plugins: map[string]plugin{
