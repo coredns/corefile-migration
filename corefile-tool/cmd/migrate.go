@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"io"
 
 	"github.com/coredns/corefile-migration/migration"
 
@@ -9,7 +10,7 @@ import (
 )
 
 // NewMigrateCmd represents the migrate command
-func NewMigrateCmd() *cobra.Command {
+func NewMigrateCmd(out io.Writer) *cobra.Command {
 	var migrateCmd = &cobra.Command{
 		Use:   "migrate",
 		Short: "Migrate your CoreDNS corefile",
@@ -28,7 +29,7 @@ corefile-tool migrate --from 1.2.2 --to 1.3.1 --corefile /path/to/Corefile  --de
 			if err != nil {
 				return fmt.Errorf("error while migration: %v \n", err)
 			}
-			fmt.Println(migrated)
+			fmt.Fprintln(out, migrated)
 			return nil
 		},
 	}

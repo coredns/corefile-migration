@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"io"
 
 	"github.com/coredns/corefile-migration/migration"
 
@@ -9,7 +10,7 @@ import (
 )
 
 // NewUnsupportedCmd represents the unsupported command
-func NewUnsupportedCmd() *cobra.Command {
+func NewUnsupportedCmd(out io.Writer) *cobra.Command {
 	unsupportedCmd := &cobra.Command{
 		Use:   "unsupported",
 		Short: "Unsupported returns a list of plugins that are not recognized/supported by the migration tool (but may still be valid in CoreDNS).",
@@ -24,7 +25,7 @@ corefile-tool unsupported --from 1.4.0 --to 1.5.0 --corefile /path/to/Corefile`,
 				return fmt.Errorf("error while listing deprecated plugins: %v \n", err)
 			}
 			for _, unsup := range unsupported {
-				fmt.Println(unsup.ToString())
+				fmt.Fprintln(out, unsup.ToString())
 			}
 			return nil
 		},

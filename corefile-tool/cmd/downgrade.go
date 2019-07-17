@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"io"
 
 	"github.com/coredns/corefile-migration/migration"
 
@@ -9,7 +10,7 @@ import (
 )
 
 // NewDowngradeCmd represents the downgrade command
-func NewDowngradeCmd() *cobra.Command {
+func NewDowngradeCmd(out io.Writer) *cobra.Command {
 	var migrateCmd = &cobra.Command{
 		Use:   "downgrade",
 		Short: "Downgrade your CoreDNS corefile to a previous version",
@@ -24,7 +25,7 @@ corefile-tool downgrade --from 1.5.0 --to 1.4.0 --corefile /path/to/Corefile`,
 			if err != nil {
 				return fmt.Errorf("error while migration: %v \n", err)
 			}
-			fmt.Println(migrated)
+			fmt.Fprintln(out, migrated)
 			return nil
 		},
 	}
