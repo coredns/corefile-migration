@@ -90,7 +90,80 @@ func addToAllServerBlocks(sb *corefile.Server, newPlugin *corefile.Plugin) (*cor
 }
 
 var Versions = map[string]release{
+	"1.6.0": {
+		priorVersion:   "1.5.2",
+		dockerImageSHA: "263d03f2b889a75a0b91e035c2a14d45d7c1559c53444c5f7abf3a76014b779d",
+		plugins: map[string]plugin{
+			"errors": {
+				options: map[string]option{
+					"consolidate": {},
+				},
+			},
+			"log": {
+				options: map[string]option{
+					"class": {},
+				},
+			},
+			"health":   {},
+			"ready":    {},
+			"autopath": {},
+			"kubernetes": {
+				options: map[string]option{
+					"endpoint": {
+						status: ignored,
+						action: useFirstArgumentOnly,
+					},
+					"tls":                {},
+					"kubeconfig":         {},
+					"namespaces":         {},
+					"labels":             {},
+					"pods":               {},
+					"endpoint_pod_names": {},
+					"upstream": {
+						status: ignored,
+						action: removeOption,
+					},
+					"ttl":         {},
+					"noendpoints": {},
+					"transfer":    {},
+					"fallthrough": {},
+					"ignore":      {},
+				},
+			},
+			"k8s_external": {
+				options: map[string]option{
+					"apex": {},
+					"ttl":  {},
+				},
+			},
+			"prometheus": {},
+			"forward": {
+				options: map[string]option{
+					"except":         {},
+					"force_tcp":      {},
+					"prefer_udp":     {},
+					"expire":         {},
+					"max_fails":      {},
+					"tls":            {},
+					"tls_servername": {},
+					"policy":         {},
+					"health_check":   {},
+				},
+			},
+			"cache": {
+				options: map[string]option{
+					"success":  {},
+					"denial":   {},
+					"prefetch": {},
+				},
+			},
+			"loop":        {},
+			"reload":      {},
+			"loadbalance": {},
+		},
+	},
 	"1.5.2": {
+		nextVersion:    "1.6.0",
 		priorVersion:   "1.5.1",
 		dockerImageSHA: "586d15ec14911ee680ac9c5af20ff24b9d1412fbbf0e05862ee1f5c37baa65b2",
 		plugins: map[string]plugin{
@@ -104,14 +177,8 @@ var Versions = map[string]release{
 					"class": {},
 				},
 			},
-			"health": {},
-			"ready": {
-				status: newdefault,
-				add: func(c *corefile.Server) (*corefile.Server, error) {
-					return addToKubernetesServerBlocks(c, &corefile.Plugin{Name: "ready"})
-				},
-				downAction: removePlugin,
-			},
+			"health":   {},
+			"ready":    {},
 			"autopath": {},
 			"kubernetes": {
 				options: map[string]option{
@@ -187,14 +254,8 @@ var Versions = map[string]release{
 					"class": {},
 				},
 			},
-			"health": {},
-			"ready": {
-				status: newdefault,
-				add: func(c *corefile.Server) (*corefile.Server, error) {
-					return addToKubernetesServerBlocks(c, &corefile.Plugin{Name: "ready"})
-				},
-				downAction: removePlugin,
-			},
+			"health":   {},
+			"ready":    {},
 			"autopath": {},
 			"kubernetes": {
 				options: map[string]option{
