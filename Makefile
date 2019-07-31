@@ -9,8 +9,9 @@ test:
 build:
 	cd corefile-tool; GO111MODULE=on go build -o corefile-tool
 
-.PHONY: linux-archs
-linux-archs:
+.PHONY: release-binaries
+release-binaries:
+	mkdir -p build
 	cd corefile-tool; for arch in $(ARCH); do \
-	    mkdir -p build/linux/$$arch && GO111MODULE=on GOOS=linux GOARCH=$$arch go build -o build/linux/$$arch/corefile-tool;\
+	    GO111MODULE=on GOOS=linux GOARCH=$$arch go build -o ../build/corefile-tool-$$arch;\
 	done
