@@ -109,10 +109,6 @@ var Versions = map[string]release{
 			"autopath": {},
 			"kubernetes": {
 				options: map[string]option{
-					"resyncperiod": {
-						status: removed,
-						action: removeOption,
-					},
 					"endpoint": {
 						status: ignored,
 						action: useFirstArgumentOnly,
