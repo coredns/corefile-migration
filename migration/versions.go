@@ -90,7 +90,80 @@ func addToAllServerBlocks(sb *corefile.Server, newPlugin *corefile.Plugin) (*cor
 }
 
 var Versions = map[string]release{
+	"1.6.2": {
+		priorVersion:   "1.6.1",
+		dockerImageSHA: "12eb885b8685b1b13a04ecf5c23bc809c2e57917252fd7b0be9e9c00644e8ee5",
+		plugins: map[string]plugin{
+			"errors": {
+				options: map[string]option{
+					"consolidate": {},
+				},
+			},
+			"log": {
+				options: map[string]option{
+					"class": {},
+				},
+			},
+			"health":   {},
+			"ready":    {},
+			"autopath": {},
+			"kubernetes": {
+				options: map[string]option{
+					"endpoint": {
+						status: ignored,
+						action: useFirstArgumentOnly,
+					},
+					"tls":                {},
+					"kubeconfig":         {},
+					"namespaces":         {},
+					"labels":             {},
+					"pods":               {},
+					"endpoint_pod_names": {},
+					"upstream": {
+						status: ignored,
+						action: removeOption,
+					},
+					"ttl":         {},
+					"noendpoints": {},
+					"transfer":    {},
+					"fallthrough": {},
+					"ignore":      {},
+				},
+			},
+			"k8s_external": {
+				options: map[string]option{
+					"apex": {},
+					"ttl":  {},
+				},
+			},
+			"prometheus": {},
+			"forward": {
+				options: map[string]option{
+					"except":         {},
+					"force_tcp":      {},
+					"prefer_udp":     {},
+					"expire":         {},
+					"max_fails":      {},
+					"tls":            {},
+					"tls_servername": {},
+					"policy":         {},
+					"health_check":   {},
+				},
+			},
+			"cache": {
+				options: map[string]option{
+					"success":  {},
+					"denial":   {},
+					"prefetch": {},
+				},
+			},
+			"loop":        {},
+			"reload":      {},
+			"loadbalance": {},
+		},
+	},
 	"1.6.1": {
+		nextVersion:    "1.6.2",
 		priorVersion:   "1.6.0",
 		dockerImageSHA: "9ae3b6fcac4ee821362277de6bd8fd2236fa7d3e19af2ef0406d80b595620a7a",
 		plugins: map[string]plugin{

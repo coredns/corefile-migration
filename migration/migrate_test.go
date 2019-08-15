@@ -16,7 +16,7 @@ func TestMigrate(t *testing.T) {
 		{
 			name:         "Handle Kubernetes plugin deprecations",
 			fromVersion:  "1.4.0",
-			toVersion:    "1.6.0",
+			toVersion:    "1.6.2",
 			deprecations: true,
 			startCorefile: `.:53 {
     errors
@@ -290,8 +290,8 @@ func TestMigrateDown(t *testing.T) {
 		expectedCorefile string
 	}{
 		{
-			name:        "from 1.5.2 to 1.1.3",
-			fromVersion: "1.5.2",
+			name:        "from 1.6.2 to 1.1.3",
+			fromVersion: "1.6.2",
 			toVersion:   "1.1.3",
 			startCorefile: `.:53 {
     errors
