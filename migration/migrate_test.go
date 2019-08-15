@@ -521,6 +521,7 @@ func TestDefault(t *testing.T) {
         pods insecure
         upstream
         fallthrough in-addr.arpa ip6.arpa
+        ttl 30
     }
     prometheus :9153
     forward . /etc/resolv.conf
@@ -537,6 +538,7 @@ func TestDefault(t *testing.T) {
         pods insecure
         upstream
         fallthrough in-addr.arpa ip6.arpa
+        ttl 30
     }
     prometheus :9153
     forward . /etc/resolv.conf
