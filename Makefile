@@ -2,8 +2,7 @@ ARCH:=amd64 arm arm64 ppc64le s390x
 
 .PHONY: test
 test:
-	cd migration; GO111MODULE=on go test -v -coverprofile=cover.out; cat cover.out >> ../coverage.txt
-	cd corefile-tool/cmd; GO111MODULE=on go test -v -coverprofile=cover.out; cat cover.out >> ../coverage.txt
+	GO111MODULE=on go test -v -coverprofile=coverage.txt ./...
 
 .PHONY: build
 build:
