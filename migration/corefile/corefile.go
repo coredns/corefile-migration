@@ -3,7 +3,7 @@ package corefile
 import (
 	"strings"
 
-	"github.com/coredns/corefile-migration/migration/caddy"
+	"github.com/caddyserver/caddy/caddyfile"
 )
 
 type Corefile struct {
@@ -28,7 +28,7 @@ type Option struct {
 
 func New(s string) (*Corefile, error) {
 	c := Corefile{}
-	cc := caddy.NewDispenser("migration", strings.NewReader(s))
+	cc := caddyfile.NewDispenser("migration", strings.NewReader(s))
 	depth := 0
 	var cSvr *Server
 	var cPlg *Plugin
