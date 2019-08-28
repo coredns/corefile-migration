@@ -13,4 +13,5 @@ release-binaries:
 	mkdir -p build
 	cd corefile-tool; for arch in $(ARCH); do \
 	    GO111MODULE=on GOOS=linux GOARCH=$$arch go build -o ../build/corefile-tool-$$arch;\
+	    shasum -a 256 ../build/corefile-tool-$$arch > ../build/corefile-tool-$$arch.sha256;\
 	done
