@@ -120,9 +120,6 @@ func getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, status string)
 		if v == toCoreDNSVersion {
 			break
 		}
-		if fromCoreDNSVersion == toCoreDNSVersion {
-			break
-		}
 	}
 	return notices, nil
 }
