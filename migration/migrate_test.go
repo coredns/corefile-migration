@@ -511,6 +511,26 @@ func TestUnsupported(t *testing.T) {
 			t.Errorf("expected to get '%v'; got '%v'", dep.ToString(), result[i].ToString())
 		}
 	}
+
+	expected = []Notice{
+		{Plugin: "route53", Severity: unsupported, Version: "1.3.1"},
+	}
+	result, err = Unsupported("1.3.1", "1.3.1", startCorefile)
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(result) != len(expected) {
+		t.Fatalf("expected to find %v deprecations; got %v", len(expected), len(result))
+	}
+
+	for i, dep := range expected {
+		if result[i].ToString() != dep.ToString() {
+			t.Errorf("expected to get '%v'; got '%v'", dep.ToString(), result[i].ToString())
+		}
+	}
+
 }
 
 func TestDefault(t *testing.T) {
@@ -604,7 +624,7 @@ func TestValidUpMigration(t *testing.T) {
 		to        string
 		shouldErr bool
 	}{
-		{"1.3.1", "1.3.1", true},
+		{"1.3.1", "1.3.1", false},
 		{"1.3.1", "1.5.0", false},
 		{"1.5.0", "1.3.1", true},
 		{"banana", "1.5.0", true},
