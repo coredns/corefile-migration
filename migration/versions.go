@@ -89,10 +89,33 @@ func addToAllServerBlocks(sb *corefile.Server, newPlugin *corefile.Plugin) (*cor
 	return addToServerBlockWithPlugins(sb, newPlugin, []string{})
 }
 
+func addOptionToPlugin(pl *corefile.Plugin, newOption *corefile.Option) (*corefile.Plugin, error) {
+	pl.Options = append(pl.Options, newOption)
+	return pl, nil
+}
+
 var Versions = map[string]release{
 	"1.6.4": {
 		priorVersion:   "1.6.3",
 		dockerImageSHA: "cfa7236dab4e3860881fdf755880ff8361e42f6cba2e3775ae48e2d46d22f7ba",
+		defaultConf: `.:53 {
+    errors
+    health {
+        lameduck 12s
+    }
+    kubernetes * *** {
+        pods insecure
+        upstream
+        fallthrough in-addr.arpa ip6.arpa
+        ttl 30
+    }
+    prometheus :9153
+    forward . *
+    cache 30
+    loop
+    reload
+    loadbalance
+}`,
 		plugins: map[string]plugin{
 			"errors": {
 				options: map[string]option{
@@ -104,7 +127,17 @@ var Versions = map[string]release{
 					"class": {},
 				},
 			},
-			"health":   {},
+			"health": {
+				options: map[string]option{
+					"lameduck": {
+						status: newdefault,
+						add: func(c *corefile.Plugin) (*corefile.Plugin, error) {
+							return addOptionToPlugin(c, &corefile.Option{Name: "lameduck 12s"})
+						},
+						downAction: removeOption,
+					},
+				},
+			},
 			"ready":    {},
 			"autopath": {},
 			"kubernetes": {

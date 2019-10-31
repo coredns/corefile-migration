@@ -14,6 +14,46 @@ func TestMigrate(t *testing.T) {
 		expectedCorefile string
 	}{
 		{
+			name:         "Add lameduck option to health plugin",
+			fromVersion:  "1.6.2",
+			toVersion:    "1.6.4",
+			deprecations: true,
+			startCorefile: `.:53 {
+    errors
+    health
+    ready
+    kubernetes cluster.local in-addr.arpa ip6.arpa {
+        pods insecure
+        fallthrough in-addr.arpa ip6.arpa
+    }
+    prometheus :9153
+    forward . /etc/resolv.conf
+    cache 30
+    loop
+    reload
+    loadbalance
+}
+`,
+			expectedCorefile: `.:53 {
+    errors
+    health {
+        lameduck 12s
+    }
+    ready
+    kubernetes cluster.local in-addr.arpa ip6.arpa {
+        pods insecure
+        fallthrough in-addr.arpa ip6.arpa
+    }
+    prometheus :9153
+    forward . /etc/resolv.conf
+    cache 30
+    loop
+    reload
+    loadbalance
+}
+`,
+		},
+		{
 			name:         "Handle Kubernetes plugin deprecations",
 			fromVersion:  "1.4.0",
 			toVersion:    "1.6.4",
@@ -37,7 +77,9 @@ func TestMigrate(t *testing.T) {
 `,
 			expectedCorefile: `.:53 {
     errors
-    health
+    health {
+        lameduck 12s
+    }
     kubernetes cluster.local in-addr.arpa ip6.arpa {
         pods insecure
         fallthrough in-addr.arpa ip6.arpa
