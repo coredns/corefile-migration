@@ -101,7 +101,7 @@ var Versions = map[string]release{
 		defaultConf: `.:53 {
     errors
     health {
-        lameduck 12s
+        lameduck 5s
     }
     kubernetes * *** {
         pods insecure
@@ -132,7 +132,7 @@ var Versions = map[string]release{
 					"lameduck": {
 						status: newdefault,
 						add: func(c *corefile.Plugin) (*corefile.Plugin, error) {
-							return addOptionToPlugin(c, &corefile.Option{Name: "lameduck 12s"})
+							return addOptionToPlugin(c, &corefile.Option{Name: "lameduck 5s"})
 						},
 						downAction: removeOption,
 					},

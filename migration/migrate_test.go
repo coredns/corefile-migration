@@ -37,7 +37,7 @@ func TestMigrate(t *testing.T) {
 			expectedCorefile: `.:53 {
     errors
     health {
-        lameduck 12s
+        lameduck 5s
     }
     ready
     kubernetes cluster.local in-addr.arpa ip6.arpa {
@@ -78,7 +78,7 @@ func TestMigrate(t *testing.T) {
 			expectedCorefile: `.:53 {
     errors
     health {
-        lameduck 12s
+        lameduck 5s
     }
     kubernetes cluster.local in-addr.arpa ip6.arpa {
         pods insecure
