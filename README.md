@@ -7,7 +7,7 @@
 This Go library provides a set of functions to help handle migrations of CoreDNS Corefiles to be compatible
 with new versions of CoreDNS.
 
-**Not all plugins are suported by this tool.** Currently only plugins found in the [default Kubernetes deployment](https://github.com/coredns/deployment/tree/master/kubernetes) of CoreDNS are supported.
+**Not all plugins are supported by this tool.** Currently only plugins found in the [default Kubernetes deployment](https://github.com/coredns/deployment/tree/master/kubernetes) of CoreDNS are supported.
 
 ## Notifications
 
@@ -40,7 +40,7 @@ any new default plugins that would be added in a migration.
 Migrate returns a migrated version of the Corefile, or an error if it cannot. The _to_ version 
 must be >= the _from_ version. It will:
   * replace/convert any plugins/options that have replacements (e.g. _proxy_ -> _forward_)
-  * return an error if replacable plugins/options cannot be converted (e.g. proxy _options_ not available in _forward_)
+  * return an error if replaceable plugins/options cannot be converted (e.g. proxy _options_ not available in _forward_)
   * remove plugins/options that do not have replacements (e.g. kubernetes `upstream`)
   * add in any new default plugins where applicable if they are not already present.
   * If deprecations is true, deprecated plugins/options will be migrated as soon as they are deprecated.
