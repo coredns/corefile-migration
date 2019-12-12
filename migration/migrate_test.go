@@ -16,7 +16,7 @@ func TestMigrate(t *testing.T) {
 		{
 			name:         "Add lameduck option to health plugin",
 			fromVersion:  "1.6.2",
-			toVersion:    "1.6.5",
+			toVersion:    "1.6.6",
 			deprecations: true,
 			startCorefile: `.:53 {
     errors
