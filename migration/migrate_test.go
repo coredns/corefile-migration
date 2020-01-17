@@ -304,6 +304,62 @@ mystub-2.example.org {
 }
 `,
 		},
+		{
+			name:         "handle supported non-default plugins",
+			fromVersion:  "1.3.1",
+			toVersion:    "1.6.6",
+			deprecations: true,
+			startCorefile: `.:53 {
+    errors
+    health
+    ready
+    autopath {
+        @kubernetes
+    }
+    kubernetes cluster.local in-addr.arpa ip6.arpa {
+        pods insecure
+        fallthrough in-addr.arpa ip6.arpa
+    }
+    prometheus :9153
+    forward . /etc/resolv.conf
+    cache 30
+    loop
+    reload
+    loadbalance
+    hosts {
+        1.2.3.4 hello
+        1:2:3::4 goodbye
+        ttl 30
+    }
+}
+`,
+			expectedCorefile: `.:53 {
+    errors
+    health {
+        lameduck 5s
+    }
+    ready
+    autopath {
+        @kubernetes
+    }
+    kubernetes cluster.local in-addr.arpa ip6.arpa {
+        pods insecure
+        fallthrough in-addr.arpa ip6.arpa
+    }
+    prometheus :9153
+    forward . /etc/resolv.conf
+    cache 30
+    loop
+    reload
+    loadbalance
+    hosts {
+        1.2.3.4 hello
+        1:2:3::4 goodbye
+        ttl 30
+    }
+}
+`,
+		},
 	}
 
 	for _, testCase := range testCases {

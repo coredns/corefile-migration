@@ -187,6 +187,7 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.6.5": {
@@ -288,6 +289,7 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.6.4": {
@@ -361,6 +363,7 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.6.3": {
@@ -434,6 +437,7 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.6.2": {
@@ -523,6 +527,7 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.6.1": {
@@ -596,6 +601,7 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.6.0": {
@@ -673,6 +679,7 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.5.2": {
@@ -750,6 +757,7 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.5.1": {
@@ -827,6 +835,7 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.5.0": {
@@ -916,6 +925,7 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 		postProcess: breakForwardStubDomainsIntoServerBlocks,
 	},
@@ -996,6 +1006,7 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 		postProcess: breakForwardStubDomainsIntoServerBlocks,
 	},
@@ -1095,6 +1106,7 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.3.0": {
@@ -1174,6 +1186,7 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.2.6": {
@@ -1262,6 +1275,7 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.2.5": {
@@ -1330,6 +1344,7 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.2.4": {
@@ -1398,6 +1413,7 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.2.3": {
@@ -1466,6 +1482,7 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.2.2": {
@@ -1549,6 +1566,7 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.2.1": {
@@ -1622,6 +1640,7 @@ var Versions = map[string]release{
 			},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.2.0": {
@@ -1691,6 +1710,7 @@ var Versions = map[string]release{
 			},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.1.4": {
@@ -1759,6 +1779,7 @@ var Versions = map[string]release{
 			},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.1.3": {
@@ -1778,6 +1799,19 @@ var Versions = map[string]release{
     cache 30
     reload
 }`},
+}
+
+var hostPluginv1 = plugin{
+	namedOptions: map[string]option{
+		"ttl":         {},
+		"no_reverse":  {},
+		"reload":      {},
+		"fallthrough": {},
+	},
+	patternOptions: map[string]option{
+		`\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}`:              {}, // close enough
+		`[0-9A-Fa-f]{1,4}:[:0-9A-Fa-f]+:[0-9A-Fa-f]{1,4}`: {}, // less close, but still close enough
+	},
 }
 
 var proxyToForwardOptionsMigrations = map[string]option{
