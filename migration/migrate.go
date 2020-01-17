@@ -7,6 +7,7 @@ package migration
 
 import (
 	"fmt"
+	"regexp"
 	"sort"
 
 	"github.com/coredns/corefile-migration/migration/corefile"
@@ -64,7 +65,8 @@ func getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, status string)
 					continue
 				}
 				for _, o := range p.Options {
-					vo, present := Versions[v].plugins[p.Name].options[o.Name]
+					//vo, present := Versions[v].plugins[p.Name].namedOptions[o.Name]
+					vo, present := matchOption(o.Name, Versions[v].plugins[p.Name])
 					if status == unsupported {
 						if present {
 							continue
@@ -89,7 +91,7 @@ func getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, status string)
 				}
 				if status != unsupported {
 				CheckForNewOptions:
-					for name, vo := range Versions[v].plugins[p.Name].options {
+					for name, vo := range Versions[v].plugins[p.Name].namedOptions {
 						if vo.status != newdefault {
 							continue
 						}
@@ -168,7 +170,8 @@ func Migrate(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string, deprecati
 				}
 				newOpts := []*corefile.Option{}
 				for _, o := range p.Options {
-					vo, present := Versions[v].plugins[p.Name].options[o.Name]
+					//vo, present := Versions[v].plugins[p.Name].namedOptions[o.Name]
+					vo, present := matchOption(o.Name, Versions[v].plugins[p.Name])
 					if !present {
 						newOpts = append(newOpts, o)
 						continue
@@ -197,7 +200,7 @@ func Migrate(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string, deprecati
 					Options: newOpts,
 				}
 			CheckForNewOptions:
-				for name, vo := range Versions[v].plugins[p.Name].options {
+				for name, vo := range Versions[v].plugins[p.Name].namedOptions {
 					if vo.status != newdefault {
 						continue
 					}
@@ -294,7 +297,8 @@ func MigrateDown(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string) (stri
 
 				newOpts := []*corefile.Option{}
 				for _, o := range p.Options {
-					vo, present := Versions[v].plugins[p.Name].options[o.Name]
+					//vo, present := Versions[v].plugins[p.Name].namedOptions[o.Name]
+					vo, present := matchOption(o.Name, Versions[v].plugins[p.Name])
 					if !present {
 						newOpts = append(newOpts, o)
 						continue
@@ -445,4 +449,23 @@ func validDownMigration(fromCoreDNSVersion, toCoreDNSVersion string) error {
 		return nil
 	}
 	return fmt.Errorf("cannot migrate down to '%v' from '%v'", toCoreDNSVersion, fromCoreDNSVersion)
+}
+
+func matchOption(oName string, p plugin) (*option, bool) {
+	o, exists := p.namedOptions[oName]
+	if exists {
+		o.name = oName
+		return &o, exists
+	}
+	for pattern, o := range p.patternOptions {
+		matched, err := regexp.MatchString(pattern, oName)
+		if err != nil {
+			continue
+		}
+		if matched {
+			o.name = oName
+			return &o, true
+		}
+	}
+	return nil, false
 }
