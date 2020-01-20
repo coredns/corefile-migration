@@ -304,6 +304,62 @@ mystub-2.example.org {
 }
 `,
 		},
+		{
+			name:         "handle supported non-default plugins",
+			fromVersion:  "1.3.1",
+			toVersion:    "1.6.6",
+			deprecations: true,
+			startCorefile: `.:53 {
+    errors
+    health
+    ready
+    autopath {
+        @kubernetes
+    }
+    kubernetes cluster.local in-addr.arpa ip6.arpa {
+        pods insecure
+        fallthrough in-addr.arpa ip6.arpa
+    }
+    prometheus :9153
+    forward . /etc/resolv.conf
+    cache 30
+    loop
+    reload
+    loadbalance
+    hosts {
+        1.2.3.4 hello
+        1:2:3::4 goodbye
+        ttl 30
+    }
+}
+`,
+			expectedCorefile: `.:53 {
+    errors
+    health {
+        lameduck 5s
+    }
+    ready
+    autopath {
+        @kubernetes
+    }
+    kubernetes cluster.local in-addr.arpa ip6.arpa {
+        pods insecure
+        fallthrough in-addr.arpa ip6.arpa
+    }
+    prometheus :9153
+    forward . /etc/resolv.conf
+    cache 30
+    loop
+    reload
+    loadbalance
+    hosts {
+        1.2.3.4 hello
+        1:2:3::4 goodbye
+        ttl 30
+    }
+}
+`,
+		},
 	}
 
 	for _, testCase := range testCases {
@@ -710,4 +766,38 @@ func TestValidDownMigration(t *testing.T) {
 			t.Errorf("expected '%v' to '%v' to be invalid versions.", tc.from, tc.to)
 		}
 	}
+}
+
+func TestMatchOption(t *testing.T) {
+	o := option{}
+	p := plugin{
+		namedOptions:   map[string]option{"named-option": o},
+		patternOptions: map[string]option{"pattern-option-[A-Z]+[0-9]+": o},
+	}
+
+	tests := []struct {
+		name    string
+		matched bool
+	}{
+		{"named-option", true},
+		{"qwerty", false},
+		{"pattern-option-A10", true},
+		{"pattern-option-a10", false},
+	}
+	for _, test := range tests {
+		gotopt, matched := matchOption(test.name, p)
+		if matched != test.matched {
+			t.Fatalf("expected %v to match plugin option", test.name)
+		}
+		if matched == test.matched && !test.matched {
+			continue
+		}
+		if gotopt == nil {
+			t.Fatal("expected non-nil returned option")
+		}
+		if gotopt.name != test.name {
+			t.Fatalf("expected returned option name == '%v' got '%v'", test.name, gotopt.name)
+		}
+	}
+
 }

@@ -6,16 +6,18 @@ import (
 )
 
 type plugin struct {
-	status     string
-	replacedBy string
-	additional string
-	options    map[string]option
-	action     pluginActionFn // action affecting this plugin only
-	add        serverActionFn // action to add a new plugin to the server block
-	downAction pluginActionFn // downgrade action affecting this plugin only
+	status         string
+	replacedBy     string
+	additional     string
+	namedOptions   map[string]option
+	patternOptions map[string]option
+	action         pluginActionFn // action affecting this plugin only
+	add            serverActionFn // action to add a new plugin to the server block
+	downAction     pluginActionFn // downgrade action affecting this plugin only
 }
 
 type option struct {
+	name       string
 	status     string
 	replacedBy string
 	additional string
@@ -41,7 +43,7 @@ type release struct {
 	// Wildcards are used for fuzzy matching:
 	//   "*"   matches exactly one token
 	//   "***" matches 0 all remaining tokens on the line
-	// Order of server blocks, plugins, and options does not matter.
+	// Order of server blocks, plugins, and namedOptions does not matter.
 	// Order of arguments does matter.
 	defaultConf string
 }
@@ -118,22 +120,22 @@ var Versions = map[string]release{
 }`,
 		plugins: map[string]plugin{
 			"errors": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"consolidate": {},
 				},
 			},
 			"log": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"class": {},
 				},
 			},
 			"health": {
-				options: map[string]option{},
+				namedOptions: map[string]option{},
 			},
 			"ready":    {},
 			"autopath": {},
 			"kubernetes": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"endpoint": {
 						status: ignored,
 						action: useFirstArgumentOnly,
@@ -156,14 +158,14 @@ var Versions = map[string]release{
 				},
 			},
 			"k8s_external": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"apex": {},
 					"ttl":  {},
 				},
 			},
 			"prometheus": {},
 			"forward": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"except":         {},
 					"force_tcp":      {},
 					"prefer_udp":     {},
@@ -176,7 +178,7 @@ var Versions = map[string]release{
 				},
 			},
 			"cache": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"success":  {},
 					"denial":   {},
 					"prefetch": {},
@@ -185,6 +187,7 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.6.5": {
@@ -211,17 +214,17 @@ var Versions = map[string]release{
 }`,
 		plugins: map[string]plugin{
 			"errors": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"consolidate": {},
 				},
 			},
 			"log": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"class": {},
 				},
 			},
 			"health": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"lameduck": {
 						status: newdefault,
 						add: func(c *corefile.Plugin) (*corefile.Plugin, error) {
@@ -234,7 +237,7 @@ var Versions = map[string]release{
 			"ready":    {},
 			"autopath": {},
 			"kubernetes": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"endpoint": {
 						status: ignored,
 						action: useFirstArgumentOnly,
@@ -257,14 +260,14 @@ var Versions = map[string]release{
 				},
 			},
 			"k8s_external": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"apex": {},
 					"ttl":  {},
 				},
 			},
 			"prometheus": {},
 			"forward": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"except":         {},
 					"force_tcp":      {},
 					"prefer_udp":     {},
@@ -277,7 +280,7 @@ var Versions = map[string]release{
 				},
 			},
 			"cache": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"success":  {},
 					"denial":   {},
 					"prefetch": {},
@@ -286,6 +289,7 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.6.4": {
@@ -294,12 +298,12 @@ var Versions = map[string]release{
 		dockerImageSHA: "493ee88e1a92abebac67cbd4b5658b4730e0f33512461442d8d9214ea6734a9b",
 		plugins: map[string]plugin{
 			"errors": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"consolidate": {},
 				},
 			},
 			"log": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"class": {},
 				},
 			},
@@ -307,7 +311,7 @@ var Versions = map[string]release{
 			"ready":    {},
 			"autopath": {},
 			"kubernetes": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"endpoint": {
 						status: ignored,
 						action: useFirstArgumentOnly,
@@ -330,14 +334,14 @@ var Versions = map[string]release{
 				},
 			},
 			"k8s_external": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"apex": {},
 					"ttl":  {},
 				},
 			},
 			"prometheus": {},
 			"forward": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"except":         {},
 					"force_tcp":      {},
 					"prefer_udp":     {},
@@ -350,7 +354,7 @@ var Versions = map[string]release{
 				},
 			},
 			"cache": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"success":  {},
 					"denial":   {},
 					"prefetch": {},
@@ -359,6 +363,7 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.6.3": {
@@ -367,12 +372,12 @@ var Versions = map[string]release{
 		dockerImageSHA: "cfa7236dab4e3860881fdf755880ff8361e42f6cba2e3775ae48e2d46d22f7ba",
 		plugins: map[string]plugin{
 			"errors": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"consolidate": {},
 				},
 			},
 			"log": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"class": {},
 				},
 			},
@@ -380,7 +385,7 @@ var Versions = map[string]release{
 			"ready":    {},
 			"autopath": {},
 			"kubernetes": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"endpoint": {
 						status: ignored,
 						action: useFirstArgumentOnly,
@@ -403,14 +408,14 @@ var Versions = map[string]release{
 				},
 			},
 			"k8s_external": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"apex": {},
 					"ttl":  {},
 				},
 			},
 			"prometheus": {},
 			"forward": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"except":         {},
 					"force_tcp":      {},
 					"prefer_udp":     {},
@@ -423,7 +428,7 @@ var Versions = map[string]release{
 				},
 			},
 			"cache": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"success":  {},
 					"denial":   {},
 					"prefetch": {},
@@ -432,6 +437,7 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.6.2": {
@@ -456,12 +462,12 @@ var Versions = map[string]release{
 }`,
 		plugins: map[string]plugin{
 			"errors": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"consolidate": {},
 				},
 			},
 			"log": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"class": {},
 				},
 			},
@@ -469,7 +475,7 @@ var Versions = map[string]release{
 			"ready":    {},
 			"autopath": {},
 			"kubernetes": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"endpoint": {
 						status: ignored,
 						action: useFirstArgumentOnly,
@@ -492,14 +498,14 @@ var Versions = map[string]release{
 				},
 			},
 			"k8s_external": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"apex": {},
 					"ttl":  {},
 				},
 			},
 			"prometheus": {},
 			"forward": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"except":         {},
 					"force_tcp":      {},
 					"prefer_udp":     {},
@@ -512,7 +518,7 @@ var Versions = map[string]release{
 				},
 			},
 			"cache": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"success":  {},
 					"denial":   {},
 					"prefetch": {},
@@ -521,6 +527,7 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.6.1": {
@@ -529,12 +536,12 @@ var Versions = map[string]release{
 		dockerImageSHA: "9ae3b6fcac4ee821362277de6bd8fd2236fa7d3e19af2ef0406d80b595620a7a",
 		plugins: map[string]plugin{
 			"errors": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"consolidate": {},
 				},
 			},
 			"log": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"class": {},
 				},
 			},
@@ -542,7 +549,7 @@ var Versions = map[string]release{
 			"ready":    {},
 			"autopath": {},
 			"kubernetes": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"endpoint": {
 						status: ignored,
 						action: useFirstArgumentOnly,
@@ -565,14 +572,14 @@ var Versions = map[string]release{
 				},
 			},
 			"k8s_external": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"apex": {},
 					"ttl":  {},
 				},
 			},
 			"prometheus": {},
 			"forward": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"except":         {},
 					"force_tcp":      {},
 					"prefer_udp":     {},
@@ -585,7 +592,7 @@ var Versions = map[string]release{
 				},
 			},
 			"cache": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"success":  {},
 					"denial":   {},
 					"prefetch": {},
@@ -594,6 +601,7 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.6.0": {
@@ -602,12 +610,12 @@ var Versions = map[string]release{
 		dockerImageSHA: "263d03f2b889a75a0b91e035c2a14d45d7c1559c53444c5f7abf3a76014b779d",
 		plugins: map[string]plugin{
 			"errors": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"consolidate": {},
 				},
 			},
 			"log": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"class": {},
 				},
 			},
@@ -615,7 +623,7 @@ var Versions = map[string]release{
 			"ready":    {},
 			"autopath": {},
 			"kubernetes": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"resyncperiod": {
 						status: removed,
 						action: removeOption,
@@ -642,14 +650,14 @@ var Versions = map[string]release{
 				},
 			},
 			"k8s_external": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"apex": {},
 					"ttl":  {},
 				},
 			},
 			"prometheus": {},
 			"forward": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"except":         {},
 					"force_tcp":      {},
 					"prefer_udp":     {},
@@ -662,7 +670,7 @@ var Versions = map[string]release{
 				},
 			},
 			"cache": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"success":  {},
 					"denial":   {},
 					"prefetch": {},
@@ -671,6 +679,7 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.5.2": {
@@ -679,12 +688,12 @@ var Versions = map[string]release{
 		dockerImageSHA: "586d15ec14911ee680ac9c5af20ff24b9d1412fbbf0e05862ee1f5c37baa65b2",
 		plugins: map[string]plugin{
 			"errors": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"consolidate": {},
 				},
 			},
 			"log": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"class": {},
 				},
 			},
@@ -692,7 +701,7 @@ var Versions = map[string]release{
 			"ready":    {},
 			"autopath": {},
 			"kubernetes": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"resyncperiod": {
 						status: deprecated,
 						action: removeOption,
@@ -719,14 +728,14 @@ var Versions = map[string]release{
 				},
 			},
 			"k8s_external": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"apex": {},
 					"ttl":  {},
 				},
 			},
 			"prometheus": {},
 			"forward": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"except":         {},
 					"force_tcp":      {},
 					"prefer_udp":     {},
@@ -739,7 +748,7 @@ var Versions = map[string]release{
 				},
 			},
 			"cache": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"success":  {},
 					"denial":   {},
 					"prefetch": {},
@@ -748,6 +757,7 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.5.1": {
@@ -756,12 +766,12 @@ var Versions = map[string]release{
 		dockerImageSHA: "451817637035535ae1fc8639753b453fa4b781d0dea557d5da5cb3c131e62ef5",
 		plugins: map[string]plugin{
 			"errors": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"consolidate": {},
 				},
 			},
 			"log": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"class": {},
 				},
 			},
@@ -769,7 +779,7 @@ var Versions = map[string]release{
 			"ready":    {},
 			"autopath": {},
 			"kubernetes": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"resyncperiod": {
 						status: deprecated,
 						action: removeOption,
@@ -796,14 +806,14 @@ var Versions = map[string]release{
 				},
 			},
 			"k8s_external": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"apex": {},
 					"ttl":  {},
 				},
 			},
 			"prometheus": {},
 			"forward": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"except":         {},
 					"force_tcp":      {},
 					"prefer_udp":     {},
@@ -816,7 +826,7 @@ var Versions = map[string]release{
 				},
 			},
 			"cache": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"success":  {},
 					"denial":   {},
 					"prefetch": {},
@@ -825,6 +835,7 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.5.0": {
@@ -833,12 +844,12 @@ var Versions = map[string]release{
 		dockerImageSHA: "e83beb5e43f8513fa735e77ffc5859640baea30a882a11cc75c4c3244a737d3c",
 		plugins: map[string]plugin{
 			"errors": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"consolidate": {},
 				},
 			},
 			"log": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"class": {},
 				},
 			},
@@ -852,7 +863,7 @@ var Versions = map[string]release{
 			},
 			"autopath": {},
 			"kubernetes": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"resyncperiod": {
 						status: deprecated,
 						action: removeOption,
@@ -879,20 +890,20 @@ var Versions = map[string]release{
 				},
 			},
 			"k8s_external": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"apex": {},
 					"ttl":  {},
 				},
 			},
 			"prometheus": {},
 			"proxy": {
-				status:     removed,
-				replacedBy: "forward",
-				action:     proxyToForwardPluginAction,
-				options:    proxyToForwardOptionsMigrations,
+				status:       removed,
+				replacedBy:   "forward",
+				action:       proxyToForwardPluginAction,
+				namedOptions: proxyToForwardOptionsMigrations,
 			},
 			"forward": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"except":         {},
 					"force_tcp":      {},
 					"prefer_udp":     {},
@@ -905,7 +916,7 @@ var Versions = map[string]release{
 				},
 			},
 			"cache": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"success":  {},
 					"denial":   {},
 					"prefetch": {},
@@ -914,6 +925,7 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 		postProcess: breakForwardStubDomainsIntoServerBlocks,
 	},
@@ -923,19 +935,19 @@ var Versions = map[string]release{
 		dockerImageSHA: "70a92e9f6fc604f9b629ca331b6135287244a86612f550941193ec7e12759417",
 		plugins: map[string]plugin{
 			"errors": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"consolidate": {},
 				},
 			},
 			"log": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"class": {},
 				},
 			},
 			"health":   {},
 			"autopath": {},
 			"kubernetes": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"resyncperiod": {},
 					"endpoint": {
 						status: ignored,
@@ -959,20 +971,20 @@ var Versions = map[string]release{
 				},
 			},
 			"k8s_external": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"apex": {},
 					"ttl":  {},
 				},
 			},
 			"prometheus": {},
 			"proxy": {
-				status:     deprecated,
-				replacedBy: "forward",
-				action:     proxyToForwardPluginAction,
-				options:    proxyToForwardOptionsMigrations,
+				status:       deprecated,
+				replacedBy:   "forward",
+				action:       proxyToForwardPluginAction,
+				namedOptions: proxyToForwardOptionsMigrations,
 			},
 			"forward": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"except":         {},
 					"force_tcp":      {},
 					"prefer_udp":     {},
@@ -985,7 +997,7 @@ var Versions = map[string]release{
 				},
 			},
 			"cache": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"success":  {},
 					"denial":   {},
 					"prefetch": {},
@@ -994,6 +1006,7 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 		postProcess: breakForwardStubDomainsIntoServerBlocks,
 	},
@@ -1020,19 +1033,19 @@ var Versions = map[string]release{
 }`,
 		plugins: map[string]plugin{
 			"errors": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"consolidate": {},
 				},
 			},
 			"log": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"class": {},
 				},
 			},
 			"health":   {},
 			"autopath": {},
 			"kubernetes": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"resyncperiod": {},
 					"endpoint": {
 						status: deprecated,
@@ -1053,14 +1066,14 @@ var Versions = map[string]release{
 				},
 			},
 			"k8s_external": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"apex": {},
 					"ttl":  {},
 				},
 			},
 			"prometheus": {},
 			"proxy": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"policy":       {},
 					"fail_timeout": {},
 					"max_fails":    {},
@@ -1071,7 +1084,7 @@ var Versions = map[string]release{
 				},
 			},
 			"forward": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"except":         {},
 					"force_tcp":      {},
 					"prefer_udp":     {},
@@ -1084,7 +1097,7 @@ var Versions = map[string]release{
 				},
 			},
 			"cache": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"success":  {},
 					"denial":   {},
 					"prefetch": {},
@@ -1093,6 +1106,7 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.3.0": {
@@ -1101,19 +1115,19 @@ var Versions = map[string]release{
 		dockerImageSHA: "e030773c7fee285435ed7fc7623532ee54c4c1c4911fb24d95cd0170a8a768bc",
 		plugins: map[string]plugin{
 			"errors": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"consolidate": {},
 				},
 			},
 			"log": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"class": {},
 				},
 			},
 			"health":   {},
 			"autopath": {},
 			"kubernetes": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"resyncperiod":       {},
 					"endpoint":           {},
 					"tls":                {},
@@ -1132,14 +1146,14 @@ var Versions = map[string]release{
 			},
 			"k8s_external": {
 				downAction: removePlugin,
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"apex": {},
 					"ttl":  {},
 				},
 			},
 			"prometheus": {},
 			"proxy": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"policy":       {},
 					"fail_timeout": {},
 					"max_fails":    {},
@@ -1150,7 +1164,7 @@ var Versions = map[string]release{
 				},
 			},
 			"forward": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"except":         {},
 					"force_tcp":      {},
 					"prefer_udp":     {},
@@ -1163,7 +1177,7 @@ var Versions = map[string]release{
 				},
 			},
 			"cache": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"success":  {},
 					"denial":   {},
 					"prefetch": {},
@@ -1172,6 +1186,7 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.2.6": {
@@ -1196,19 +1211,19 @@ var Versions = map[string]release{
 }`,
 		plugins: map[string]plugin{
 			"errors": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"consolidate": {},
 				},
 			},
 			"log": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"class": {},
 				},
 			},
 			"health":   {},
 			"autopath": {},
 			"kubernetes": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"resyncperiod":       {},
 					"endpoint":           {},
 					"tls":                {},
@@ -1227,7 +1242,7 @@ var Versions = map[string]release{
 			},
 			"prometheus": {},
 			"proxy": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"policy":       {},
 					"fail_timeout": {},
 					"max_fails":    {},
@@ -1238,7 +1253,7 @@ var Versions = map[string]release{
 				},
 			},
 			"forward": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"except":         {},
 					"force_tcp":      {},
 					"prefer_udp":     {},
@@ -1251,7 +1266,7 @@ var Versions = map[string]release{
 				},
 			},
 			"cache": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"success":  {},
 					"denial":   {},
 					"prefetch": {},
@@ -1260,6 +1275,7 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.2.5": {
@@ -1269,14 +1285,14 @@ var Versions = map[string]release{
 		plugins: map[string]plugin{
 			"errors": {},
 			"log": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"class": {},
 				},
 			},
 			"health":   {},
 			"autopath": {},
 			"kubernetes": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"resyncperiod":       {},
 					"endpoint":           {},
 					"tls":                {},
@@ -1295,7 +1311,7 @@ var Versions = map[string]release{
 			},
 			"prometheus": {},
 			"proxy": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"policy":       {},
 					"fail_timeout": {},
 					"max_fails":    {},
@@ -1306,7 +1322,7 @@ var Versions = map[string]release{
 				},
 			},
 			"forward": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"except":         {},
 					"force_tcp":      {},
 					"prefer_udp":     {},
@@ -1319,7 +1335,7 @@ var Versions = map[string]release{
 				},
 			},
 			"cache": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"success":  {},
 					"denial":   {},
 					"prefetch": {},
@@ -1328,6 +1344,7 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.2.4": {
@@ -1337,14 +1354,14 @@ var Versions = map[string]release{
 		plugins: map[string]plugin{
 			"errors": {},
 			"log": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"class": {},
 				},
 			},
 			"health":   {},
 			"autopath": {},
 			"kubernetes": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"resyncperiod":       {},
 					"endpoint":           {},
 					"tls":                {},
@@ -1363,7 +1380,7 @@ var Versions = map[string]release{
 			},
 			"prometheus": {},
 			"proxy": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"policy":       {},
 					"fail_timeout": {},
 					"max_fails":    {},
@@ -1374,7 +1391,7 @@ var Versions = map[string]release{
 				},
 			},
 			"forward": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"except":         {},
 					"force_tcp":      {},
 					"prefer_udp":     {},
@@ -1387,7 +1404,7 @@ var Versions = map[string]release{
 				},
 			},
 			"cache": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"success":  {},
 					"denial":   {},
 					"prefetch": {},
@@ -1396,6 +1413,7 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.2.3": {
@@ -1405,14 +1423,14 @@ var Versions = map[string]release{
 		plugins: map[string]plugin{
 			"errors": {},
 			"log": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"class": {},
 				},
 			},
 			"health":   {},
 			"autopath": {},
 			"kubernetes": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"resyncperiod":       {},
 					"endpoint":           {},
 					"tls":                {},
@@ -1431,7 +1449,7 @@ var Versions = map[string]release{
 			},
 			"prometheus": {},
 			"proxy": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"policy":       {},
 					"fail_timeout": {},
 					"max_fails":    {},
@@ -1442,7 +1460,7 @@ var Versions = map[string]release{
 				},
 			},
 			"forward": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"except":         {},
 					"force_tcp":      {},
 					"prefer_udp":     {},
@@ -1455,7 +1473,7 @@ var Versions = map[string]release{
 				},
 			},
 			"cache": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"success":  {},
 					"denial":   {},
 					"prefetch": {},
@@ -1464,6 +1482,7 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.2.2": {
@@ -1489,14 +1508,14 @@ var Versions = map[string]release{
 		plugins: map[string]plugin{
 			"errors": {},
 			"log": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"class": {},
 				},
 			},
 			"health":   {},
 			"autopath": {},
 			"kubernetes": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"resyncperiod":       {},
 					"endpoint":           {},
 					"tls":                {},
@@ -1514,7 +1533,7 @@ var Versions = map[string]release{
 			},
 			"prometheus": {},
 			"proxy": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"policy":       {},
 					"fail_timeout": {},
 					"max_fails":    {},
@@ -1525,7 +1544,7 @@ var Versions = map[string]release{
 				},
 			},
 			"forward": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"except":         {},
 					"force_tcp":      {},
 					"prefer_udp":     {},
@@ -1538,7 +1557,7 @@ var Versions = map[string]release{
 				},
 			},
 			"cache": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"success":  {},
 					"denial":   {},
 					"prefetch": {},
@@ -1547,6 +1566,7 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.2.1": {
@@ -1556,14 +1576,14 @@ var Versions = map[string]release{
 		plugins: map[string]plugin{
 			"errors": {},
 			"log": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"class": {},
 				},
 			},
 			"health":   {},
 			"autopath": {},
 			"kubernetes": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"resyncperiod":       {},
 					"endpoint":           {},
 					"tls":                {},
@@ -1581,7 +1601,7 @@ var Versions = map[string]release{
 			},
 			"prometheus": {},
 			"proxy": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"policy":       {},
 					"fail_timeout": {},
 					"max_fails":    {},
@@ -1592,7 +1612,7 @@ var Versions = map[string]release{
 				},
 			},
 			"forward": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"except":         {},
 					"force_tcp":      {},
 					"prefer_udp":     {},
@@ -1605,7 +1625,7 @@ var Versions = map[string]release{
 				},
 			},
 			"cache": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"success":  {},
 					"denial":   {},
 					"prefetch": {},
@@ -1620,6 +1640,7 @@ var Versions = map[string]release{
 			},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.2.0": {
@@ -1629,14 +1650,14 @@ var Versions = map[string]release{
 		plugins: map[string]plugin{
 			"errors": {},
 			"log": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"class": {},
 				},
 			},
 			"health":   {},
 			"autopath": {},
 			"kubernetes": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"resyncperiod":       {},
 					"endpoint":           {},
 					"tls":                {},
@@ -1654,7 +1675,7 @@ var Versions = map[string]release{
 			},
 			"prometheus": {},
 			"proxy": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"policy":       {},
 					"fail_timeout": {},
 					"max_fails":    {},
@@ -1668,7 +1689,7 @@ var Versions = map[string]release{
 				},
 			},
 			"forward": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"except":         {},
 					"force_tcp":      {},
 					"prefer_udp":     {},
@@ -1681,7 +1702,7 @@ var Versions = map[string]release{
 				},
 			},
 			"cache": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"success":  {},
 					"denial":   {},
 					"prefetch": {},
@@ -1689,6 +1710,7 @@ var Versions = map[string]release{
 			},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.1.4": {
@@ -1698,14 +1720,14 @@ var Versions = map[string]release{
 		plugins: map[string]plugin{
 			"errors": {},
 			"log": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"class": {},
 				},
 			},
 			"health":   {},
 			"autopath": {},
 			"kubernetes": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"resyncperiod":       {},
 					"endpoint":           {},
 					"tls":                {},
@@ -1723,7 +1745,7 @@ var Versions = map[string]release{
 			},
 			"prometheus": {},
 			"proxy": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"policy":       {},
 					"fail_timeout": {},
 					"max_fails":    {},
@@ -1737,7 +1759,7 @@ var Versions = map[string]release{
 				},
 			},
 			"forward": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"except":         {},
 					"force_tcp":      {},
 					"expire":         {},
@@ -1749,7 +1771,7 @@ var Versions = map[string]release{
 				},
 			},
 			"cache": {
-				options: map[string]option{
+				namedOptions: map[string]option{
 					"success":  {},
 					"denial":   {},
 					"prefetch": {},
@@ -1757,6 +1779,7 @@ var Versions = map[string]release{
 			},
 			"reload":      {},
 			"loadbalance": {},
+			"hosts":       hostPluginv1,
 		},
 	},
 	"1.1.3": {
@@ -1776,6 +1799,19 @@ var Versions = map[string]release{
     cache 30
     reload
 }`},
+}
+
+var hostPluginv1 = plugin{
+	namedOptions: map[string]option{
+		"ttl":         {},
+		"no_reverse":  {},
+		"reload":      {},
+		"fallthrough": {},
+	},
+	patternOptions: map[string]option{
+		`\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}`:              {}, // close enough
+		`[0-9A-Fa-f]{1,4}:[:0-9A-Fa-f]+:[0-9A-Fa-f]{1,4}`: {}, // less close, but still close enough
+	},
 }
 
 var proxyToForwardOptionsMigrations = map[string]option{

@@ -7,7 +7,7 @@
 This Go library provides a set of functions to help handle migrations of CoreDNS Corefiles to be compatible
 with new versions of CoreDNS.
 
-**Not all plugins are supported by this tool.** Currently only plugins found in the [default Kubernetes deployment](https://github.com/coredns/deployment/tree/master/kubernetes) of CoreDNS are supported.
+**Not all plugins are supported by this tool.** With few exceptions, only plugins found in the [default Kubernetes deployment](https://github.com/coredns/deployment/tree/master/kubernetes) of CoreDNS are supported.
 
 ## Notifications
 
