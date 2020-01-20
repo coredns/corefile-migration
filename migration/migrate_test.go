@@ -767,3 +767,37 @@ func TestValidDownMigration(t *testing.T) {
 		}
 	}
 }
+
+func TestMatchOption(t *testing.T) {
+	o := option{}
+	p := plugin{
+		namedOptions:   map[string]option{"named-option": o},
+		patternOptions: map[string]option{"pattern-option-[A-Z]+[0-9]+": o},
+	}
+
+	tests := []struct {
+		name    string
+		matched bool
+	}{
+		{"named-option", true},
+		{"qwerty", false},
+		{"pattern-option-A10", true},
+		{"pattern-option-a10", false},
+	}
+	for _, test := range tests {
+		gotopt, matched := matchOption(test.name, p)
+		if matched != test.matched {
+			t.Fatalf("expected %v to match plugin option", test.name)
+		}
+		if matched == test.matched && !test.matched {
+			continue
+		}
+		if gotopt == nil {
+			t.Fatal("expected non-nil returned option")
+		}
+		if gotopt.name != test.name {
+			t.Fatalf("expected returned option name == '%v' got '%v'", test.name, gotopt.name)
+		}
+	}
+
+}
