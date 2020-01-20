@@ -44,17 +44,14 @@ func getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, status string)
 		for _, s := range cf.Servers {
 			for _, p := range s.Plugins {
 				vp, present := Versions[v].plugins[p.Name]
-				if status == unsupported {
-					if present {
-						continue
-					}
+				if status == unsupported && !present {
 					notices = append(notices, Notice{Plugin: p.Name, Severity: status, Version: v})
 					continue
 				}
 				if !present {
 					continue
 				}
-				if vp.status != "" && vp.status != newdefault {
+				if vp.status != "" && vp.status != newdefault && status != unsupported {
 					notices = append(notices, Notice{
 						Plugin:     p.Name,
 						Severity:   vp.status,
