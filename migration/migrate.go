@@ -72,8 +72,6 @@ func getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, status string)
 							Option:     o.Name,
 							Severity:   status,
 							Version:    v,
-							ReplacedBy: vo.replacedBy,
-							Additional: vo.additional,
 						})
 						continue
 					}

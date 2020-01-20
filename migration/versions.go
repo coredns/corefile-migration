@@ -119,75 +119,20 @@ var Versions = map[string]release{
     loadbalance
 }`,
 		plugins: map[string]plugin{
-			"errors": {
-				namedOptions: map[string]option{
-					"consolidate": {},
-				},
-			},
-			"log": {
-				namedOptions: map[string]option{
-					"class": {},
-				},
-			},
-			"health": {
-				namedOptions: map[string]option{},
-			},
+			"errors":   plugins["errors"]["v2"],
+			"log":      plugins["log"]["v1"],
+			"health":   plugins["health"]["v1"],
 			"ready":    {},
 			"autopath": {},
-			"kubernetes": {
-				namedOptions: map[string]option{
-					"endpoint": {
-						status: ignored,
-						action: useFirstArgumentOnly,
-					},
-					"tls":                {},
-					"kubeconfig":         {},
-					"namespaces":         {},
-					"labels":             {},
-					"pods":               {},
-					"endpoint_pod_names": {},
-					"upstream": {
-						status: ignored,
-						action: removeOption,
-					},
-					"ttl":         {},
-					"noendpoints": {},
-					"transfer":    {},
-					"fallthrough": {},
-					"ignore":      {},
-				},
-			},
-			"k8s_external": {
-				namedOptions: map[string]option{
-					"apex": {},
-					"ttl":  {},
-				},
-			},
+			"kubernetes": plugins["kubernetes"]["v7"],
+			"k8s_external": plugins["k8s_external"]["v1"],
 			"prometheus": {},
-			"forward": {
-				namedOptions: map[string]option{
-					"except":         {},
-					"force_tcp":      {},
-					"prefer_udp":     {},
-					"expire":         {},
-					"max_fails":      {},
-					"tls":            {},
-					"tls_servername": {},
-					"policy":         {},
-					"health_check":   {},
-				},
-			},
-			"cache": {
-				namedOptions: map[string]option{
-					"success":  {},
-					"denial":   {},
-					"prefetch": {},
-				},
-			},
+			"forward": plugins["forward"]["v2"],
+			"cache": plugins["cache"]["v2"],
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
-			"hosts":       hostPluginv1,
+			"hosts":       plugins["hosts"]["v1"],
 		},
 	},
 	"1.6.5": {
@@ -213,83 +158,20 @@ var Versions = map[string]release{
     loadbalance
 }`,
 		plugins: map[string]plugin{
-			"errors": {
-				namedOptions: map[string]option{
-					"consolidate": {},
-				},
-			},
-			"log": {
-				namedOptions: map[string]option{
-					"class": {},
-				},
-			},
-			"health": {
-				namedOptions: map[string]option{
-					"lameduck": {
-						status: newdefault,
-						add: func(c *corefile.Plugin) (*corefile.Plugin, error) {
-							return addOptionToPlugin(c, &corefile.Option{Name: "lameduck 5s"})
-						},
-						downAction: removeOption,
-					},
-				},
-			},
+			"errors": plugins["errors"]["v2"],
+			"log":    plugins["log"]["v1"],
+			"health": plugins["health"]["v1 add lameduck"],
 			"ready":    {},
 			"autopath": {},
-			"kubernetes": {
-				namedOptions: map[string]option{
-					"endpoint": {
-						status: ignored,
-						action: useFirstArgumentOnly,
-					},
-					"tls":                {},
-					"kubeconfig":         {},
-					"namespaces":         {},
-					"labels":             {},
-					"pods":               {},
-					"endpoint_pod_names": {},
-					"upstream": {
-						status: ignored,
-						action: removeOption,
-					},
-					"ttl":         {},
-					"noendpoints": {},
-					"transfer":    {},
-					"fallthrough": {},
-					"ignore":      {},
-				},
-			},
-			"k8s_external": {
-				namedOptions: map[string]option{
-					"apex": {},
-					"ttl":  {},
-				},
-			},
+			"kubernetes": plugins["kubernetes"]["v7"],
+			"k8s_external": plugins["k8s_external"]["v1"],
 			"prometheus": {},
-			"forward": {
-				namedOptions: map[string]option{
-					"except":         {},
-					"force_tcp":      {},
-					"prefer_udp":     {},
-					"expire":         {},
-					"max_fails":      {},
-					"tls":            {},
-					"tls_servername": {},
-					"policy":         {},
-					"health_check":   {},
-				},
-			},
-			"cache": {
-				namedOptions: map[string]option{
-					"success":  {},
-					"denial":   {},
-					"prefetch": {},
-				},
-			},
+			"forward": plugins["forward"]["v2"],
+			"cache": plugins["cache"]["v1"],
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
-			"hosts":       hostPluginv1,
+			"hosts":       plugins["hosts"]["v1"],
 		},
 	},
 	"1.6.4": {
@@ -297,73 +179,20 @@ var Versions = map[string]release{
 		priorVersion:   "1.6.3",
 		dockerImageSHA: "493ee88e1a92abebac67cbd4b5658b4730e0f33512461442d8d9214ea6734a9b",
 		plugins: map[string]plugin{
-			"errors": {
-				namedOptions: map[string]option{
-					"consolidate": {},
-				},
-			},
-			"log": {
-				namedOptions: map[string]option{
-					"class": {},
-				},
-			},
-			"health":   {},
+			"errors":   plugins["errors"]["v2"],
+			"log":      plugins["log"]["v1"],
+			"health":   plugins["health"]["v1"],
 			"ready":    {},
 			"autopath": {},
-			"kubernetes": {
-				namedOptions: map[string]option{
-					"endpoint": {
-						status: ignored,
-						action: useFirstArgumentOnly,
-					},
-					"tls":                {},
-					"kubeconfig":         {},
-					"namespaces":         {},
-					"labels":             {},
-					"pods":               {},
-					"endpoint_pod_names": {},
-					"upstream": {
-						status: ignored,
-						action: removeOption,
-					},
-					"ttl":         {},
-					"noendpoints": {},
-					"transfer":    {},
-					"fallthrough": {},
-					"ignore":      {},
-				},
-			},
-			"k8s_external": {
-				namedOptions: map[string]option{
-					"apex": {},
-					"ttl":  {},
-				},
-			},
+			"kubernetes": plugins["kubernetes"]["v7"],
+			"k8s_external": plugins["k8s_external"]["v1"],
 			"prometheus": {},
-			"forward": {
-				namedOptions: map[string]option{
-					"except":         {},
-					"force_tcp":      {},
-					"prefer_udp":     {},
-					"expire":         {},
-					"max_fails":      {},
-					"tls":            {},
-					"tls_servername": {},
-					"policy":         {},
-					"health_check":   {},
-				},
-			},
-			"cache": {
-				namedOptions: map[string]option{
-					"success":  {},
-					"denial":   {},
-					"prefetch": {},
-				},
-			},
+			"forward": plugins["forward"]["v2"],
+			"cache": plugins["cache"]["v1"],
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
-			"hosts":       hostPluginv1,
+			"hosts":       plugins["hosts"]["v1"],
 		},
 	},
 	"1.6.3": {
@@ -371,73 +200,20 @@ var Versions = map[string]release{
 		priorVersion:   "1.6.2",
 		dockerImageSHA: "cfa7236dab4e3860881fdf755880ff8361e42f6cba2e3775ae48e2d46d22f7ba",
 		plugins: map[string]plugin{
-			"errors": {
-				namedOptions: map[string]option{
-					"consolidate": {},
-				},
-			},
-			"log": {
-				namedOptions: map[string]option{
-					"class": {},
-				},
-			},
-			"health":   {},
+			"errors":   plugins["errors"]["v2"],
+			"log":      plugins["log"]["v1"],
+			"health":   plugins["health"]["v1"],
 			"ready":    {},
 			"autopath": {},
-			"kubernetes": {
-				namedOptions: map[string]option{
-					"endpoint": {
-						status: ignored,
-						action: useFirstArgumentOnly,
-					},
-					"tls":                {},
-					"kubeconfig":         {},
-					"namespaces":         {},
-					"labels":             {},
-					"pods":               {},
-					"endpoint_pod_names": {},
-					"upstream": {
-						status: ignored,
-						action: removeOption,
-					},
-					"ttl":         {},
-					"noendpoints": {},
-					"transfer":    {},
-					"fallthrough": {},
-					"ignore":      {},
-				},
-			},
-			"k8s_external": {
-				namedOptions: map[string]option{
-					"apex": {},
-					"ttl":  {},
-				},
-			},
+			"kubernetes": plugins["kubernetes"]["v7"],
+			"k8s_external": plugins["k8s_external"]["v1"],
 			"prometheus": {},
-			"forward": {
-				namedOptions: map[string]option{
-					"except":         {},
-					"force_tcp":      {},
-					"prefer_udp":     {},
-					"expire":         {},
-					"max_fails":      {},
-					"tls":            {},
-					"tls_servername": {},
-					"policy":         {},
-					"health_check":   {},
-				},
-			},
-			"cache": {
-				namedOptions: map[string]option{
-					"success":  {},
-					"denial":   {},
-					"prefetch": {},
-				},
-			},
+			"forward": plugins["forward"]["v2"],
+			"cache": plugins["cache"]["v1"],
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
-			"hosts":       hostPluginv1,
+			"hosts":       plugins["hosts"]["v1"],
 		},
 	},
 	"1.6.2": {
@@ -461,73 +237,20 @@ var Versions = map[string]release{
     loadbalance
 }`,
 		plugins: map[string]plugin{
-			"errors": {
-				namedOptions: map[string]option{
-					"consolidate": {},
-				},
-			},
-			"log": {
-				namedOptions: map[string]option{
-					"class": {},
-				},
-			},
-			"health":   {},
+			"errors":   plugins["errors"]["v2"],
+			"log":      plugins["log"]["v1"],
+			"health":   plugins["health"]["v1"],
 			"ready":    {},
 			"autopath": {},
-			"kubernetes": {
-				namedOptions: map[string]option{
-					"endpoint": {
-						status: ignored,
-						action: useFirstArgumentOnly,
-					},
-					"tls":                {},
-					"kubeconfig":         {},
-					"namespaces":         {},
-					"labels":             {},
-					"pods":               {},
-					"endpoint_pod_names": {},
-					"upstream": {
-						status: ignored,
-						action: removeOption,
-					},
-					"ttl":         {},
-					"noendpoints": {},
-					"transfer":    {},
-					"fallthrough": {},
-					"ignore":      {},
-				},
-			},
-			"k8s_external": {
-				namedOptions: map[string]option{
-					"apex": {},
-					"ttl":  {},
-				},
-			},
+			"kubernetes": plugins["kubernetes"]["v7"],
+			"k8s_external": plugins["k8s_external"]["v1"],
 			"prometheus": {},
-			"forward": {
-				namedOptions: map[string]option{
-					"except":         {},
-					"force_tcp":      {},
-					"prefer_udp":     {},
-					"expire":         {},
-					"max_fails":      {},
-					"tls":            {},
-					"tls_servername": {},
-					"policy":         {},
-					"health_check":   {},
-				},
-			},
-			"cache": {
-				namedOptions: map[string]option{
-					"success":  {},
-					"denial":   {},
-					"prefetch": {},
-				},
-			},
+			"forward": plugins["forward"]["v2"],
+			"cache": plugins["cache"]["v1"],
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
-			"hosts":       hostPluginv1,
+			"hosts":       plugins["hosts"]["v1"],
 		},
 	},
 	"1.6.1": {
@@ -535,73 +258,20 @@ var Versions = map[string]release{
 		priorVersion:   "1.6.0",
 		dockerImageSHA: "9ae3b6fcac4ee821362277de6bd8fd2236fa7d3e19af2ef0406d80b595620a7a",
 		plugins: map[string]plugin{
-			"errors": {
-				namedOptions: map[string]option{
-					"consolidate": {},
-				},
-			},
-			"log": {
-				namedOptions: map[string]option{
-					"class": {},
-				},
-			},
-			"health":   {},
+			"errors":   plugins["errors"]["v2"],
+			"log":      plugins["log"]["v1"],
+			"health":   plugins["health"]["v1"],
 			"ready":    {},
 			"autopath": {},
-			"kubernetes": {
-				namedOptions: map[string]option{
-					"endpoint": {
-						status: ignored,
-						action: useFirstArgumentOnly,
-					},
-					"tls":                {},
-					"kubeconfig":         {},
-					"namespaces":         {},
-					"labels":             {},
-					"pods":               {},
-					"endpoint_pod_names": {},
-					"upstream": {
-						status: ignored,
-						action: removeOption,
-					},
-					"ttl":         {},
-					"noendpoints": {},
-					"transfer":    {},
-					"fallthrough": {},
-					"ignore":      {},
-				},
-			},
-			"k8s_external": {
-				namedOptions: map[string]option{
-					"apex": {},
-					"ttl":  {},
-				},
-			},
+			"kubernetes": plugins["kubernetes"]["v7"],
+			"k8s_external": plugins["k8s_external"]["v1"],
 			"prometheus": {},
-			"forward": {
-				namedOptions: map[string]option{
-					"except":         {},
-					"force_tcp":      {},
-					"prefer_udp":     {},
-					"expire":         {},
-					"max_fails":      {},
-					"tls":            {},
-					"tls_servername": {},
-					"policy":         {},
-					"health_check":   {},
-				},
-			},
-			"cache": {
-				namedOptions: map[string]option{
-					"success":  {},
-					"denial":   {},
-					"prefetch": {},
-				},
-			},
+			"forward": plugins["forward"]["v2"],
+			"cache": plugins["cache"]["v1"],
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
-			"hosts":       hostPluginv1,
+			"hosts":       plugins["hosts"]["v1"],
 		},
 	},
 	"1.6.0": {
@@ -609,77 +279,20 @@ var Versions = map[string]release{
 		priorVersion:   "1.5.2",
 		dockerImageSHA: "263d03f2b889a75a0b91e035c2a14d45d7c1559c53444c5f7abf3a76014b779d",
 		plugins: map[string]plugin{
-			"errors": {
-				namedOptions: map[string]option{
-					"consolidate": {},
-				},
-			},
-			"log": {
-				namedOptions: map[string]option{
-					"class": {},
-				},
-			},
-			"health":   {},
+			"errors":   plugins["errors"]["v2"],
+			"log":      plugins["log"]["v1"],
+			"health":   plugins["health"]["v1"],
 			"ready":    {},
 			"autopath": {},
-			"kubernetes": {
-				namedOptions: map[string]option{
-					"resyncperiod": {
-						status: removed,
-						action: removeOption,
-					},
-					"endpoint": {
-						status: ignored,
-						action: useFirstArgumentOnly,
-					},
-					"tls":                {},
-					"kubeconfig":         {},
-					"namespaces":         {},
-					"labels":             {},
-					"pods":               {},
-					"endpoint_pod_names": {},
-					"upstream": {
-						status: ignored,
-						action: removeOption,
-					},
-					"ttl":         {},
-					"noendpoints": {},
-					"transfer":    {},
-					"fallthrough": {},
-					"ignore":      {},
-				},
-			},
-			"k8s_external": {
-				namedOptions: map[string]option{
-					"apex": {},
-					"ttl":  {},
-				},
-			},
+			"kubernetes": plugins["kubernetes"]["v6"],
+			"k8s_external": plugins["k8s_external"]["v1"],
 			"prometheus": {},
-			"forward": {
-				namedOptions: map[string]option{
-					"except":         {},
-					"force_tcp":      {},
-					"prefer_udp":     {},
-					"expire":         {},
-					"max_fails":      {},
-					"tls":            {},
-					"tls_servername": {},
-					"policy":         {},
-					"health_check":   {},
-				},
-			},
-			"cache": {
-				namedOptions: map[string]option{
-					"success":  {},
-					"denial":   {},
-					"prefetch": {},
-				},
-			},
+			"forward": plugins["forward"]["v2"],
+			"cache": plugins["cache"]["v1"],
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
-			"hosts":       hostPluginv1,
+			"hosts":       plugins["hosts"]["v1"],
 		},
 	},
 	"1.5.2": {
@@ -687,77 +300,20 @@ var Versions = map[string]release{
 		priorVersion:   "1.5.1",
 		dockerImageSHA: "586d15ec14911ee680ac9c5af20ff24b9d1412fbbf0e05862ee1f5c37baa65b2",
 		plugins: map[string]plugin{
-			"errors": {
-				namedOptions: map[string]option{
-					"consolidate": {},
-				},
-			},
-			"log": {
-				namedOptions: map[string]option{
-					"class": {},
-				},
-			},
-			"health":   {},
+			"errors":   plugins["errors"]["v2"],
+			"log":      plugins["log"]["v1"],
+			"health":   plugins["health"]["v1"],
 			"ready":    {},
 			"autopath": {},
-			"kubernetes": {
-				namedOptions: map[string]option{
-					"resyncperiod": {
-						status: deprecated,
-						action: removeOption,
-					},
-					"endpoint": {
-						status: ignored,
-						action: useFirstArgumentOnly,
-					},
-					"tls":                {},
-					"kubeconfig":         {},
-					"namespaces":         {},
-					"labels":             {},
-					"pods":               {},
-					"endpoint_pod_names": {},
-					"upstream": {
-						status: ignored,
-						action: removeOption,
-					},
-					"ttl":         {},
-					"noendpoints": {},
-					"transfer":    {},
-					"fallthrough": {},
-					"ignore":      {},
-				},
-			},
-			"k8s_external": {
-				namedOptions: map[string]option{
-					"apex": {},
-					"ttl":  {},
-				},
-			},
+			"kubernetes": plugins["kubernetes"]["v5"],
+			"k8s_external": plugins["k8s_external"]["v1"],
 			"prometheus": {},
-			"forward": {
-				namedOptions: map[string]option{
-					"except":         {},
-					"force_tcp":      {},
-					"prefer_udp":     {},
-					"expire":         {},
-					"max_fails":      {},
-					"tls":            {},
-					"tls_servername": {},
-					"policy":         {},
-					"health_check":   {},
-				},
-			},
-			"cache": {
-				namedOptions: map[string]option{
-					"success":  {},
-					"denial":   {},
-					"prefetch": {},
-				},
-			},
+			"forward": plugins["forward"]["v2"],
+			"cache": plugins["cache"]["v1"],
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
-			"hosts":       hostPluginv1,
+			"hosts":       plugins["hosts"]["v1"],
 		},
 	},
 	"1.5.1": {
@@ -765,77 +321,20 @@ var Versions = map[string]release{
 		priorVersion:   "1.5.0",
 		dockerImageSHA: "451817637035535ae1fc8639753b453fa4b781d0dea557d5da5cb3c131e62ef5",
 		plugins: map[string]plugin{
-			"errors": {
-				namedOptions: map[string]option{
-					"consolidate": {},
-				},
-			},
-			"log": {
-				namedOptions: map[string]option{
-					"class": {},
-				},
-			},
-			"health":   {},
+			"errors":   plugins["errors"]["v2"],
+			"log":      plugins["log"]["v1"],
+			"health":   plugins["health"]["v1"],
 			"ready":    {},
 			"autopath": {},
-			"kubernetes": {
-				namedOptions: map[string]option{
-					"resyncperiod": {
-						status: deprecated,
-						action: removeOption,
-					},
-					"endpoint": {
-						status: ignored,
-						action: useFirstArgumentOnly,
-					},
-					"tls":                {},
-					"kubeconfig":         {},
-					"namespaces":         {},
-					"labels":             {},
-					"pods":               {},
-					"endpoint_pod_names": {},
-					"upstream": {
-						status: ignored,
-						action: removeOption,
-					},
-					"ttl":         {},
-					"noendpoints": {},
-					"transfer":    {},
-					"fallthrough": {},
-					"ignore":      {},
-				},
-			},
-			"k8s_external": {
-				namedOptions: map[string]option{
-					"apex": {},
-					"ttl":  {},
-				},
-			},
+			"kubernetes": plugins["kubernetes"]["v5"],
+			"k8s_external": plugins["k8s_external"]["v1"],
 			"prometheus": {},
-			"forward": {
-				namedOptions: map[string]option{
-					"except":         {},
-					"force_tcp":      {},
-					"prefer_udp":     {},
-					"expire":         {},
-					"max_fails":      {},
-					"tls":            {},
-					"tls_servername": {},
-					"policy":         {},
-					"health_check":   {},
-				},
-			},
-			"cache": {
-				namedOptions: map[string]option{
-					"success":  {},
-					"denial":   {},
-					"prefetch": {},
-				},
-			},
+			"forward": plugins["forward"]["v2"],
+			"cache": plugins["cache"]["v1"],
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
-			"hosts":       hostPluginv1,
+			"hosts":       plugins["hosts"]["v1"],
 		},
 	},
 	"1.5.0": {
@@ -843,17 +342,9 @@ var Versions = map[string]release{
 		priorVersion:   "1.4.0",
 		dockerImageSHA: "e83beb5e43f8513fa735e77ffc5859640baea30a882a11cc75c4c3244a737d3c",
 		plugins: map[string]plugin{
-			"errors": {
-				namedOptions: map[string]option{
-					"consolidate": {},
-				},
-			},
-			"log": {
-				namedOptions: map[string]option{
-					"class": {},
-				},
-			},
-			"health": {},
+			"errors": plugins["errors"]["v2"],
+			"log":    plugins["log"]["v1"],
+			"health":   plugins["health"]["v1"],
 			"ready": {
 				status: newdefault,
 				add: func(c *corefile.Server) (*corefile.Server, error) {
@@ -862,39 +353,8 @@ var Versions = map[string]release{
 				downAction: removePlugin,
 			},
 			"autopath": {},
-			"kubernetes": {
-				namedOptions: map[string]option{
-					"resyncperiod": {
-						status: deprecated,
-						action: removeOption,
-					},
-					"endpoint": {
-						status: ignored,
-						action: useFirstArgumentOnly,
-					},
-					"tls":                {},
-					"kubeconfig":         {},
-					"namespaces":         {},
-					"labels":             {},
-					"pods":               {},
-					"endpoint_pod_names": {},
-					"upstream": {
-						status: ignored,
-						action: removeOption,
-					},
-					"ttl":         {},
-					"noendpoints": {},
-					"transfer":    {},
-					"fallthrough": {},
-					"ignore":      {},
-				},
-			},
-			"k8s_external": {
-				namedOptions: map[string]option{
-					"apex": {},
-					"ttl":  {},
-				},
-			},
+			"kubernetes": plugins["kubernetes"]["v5"],
+			"k8s_external": plugins["k8s_external"]["v1"],
 			"prometheus": {},
 			"proxy": {
 				status:       removed,
@@ -902,30 +362,12 @@ var Versions = map[string]release{
 				action:       proxyToForwardPluginAction,
 				namedOptions: proxyToForwardOptionsMigrations,
 			},
-			"forward": {
-				namedOptions: map[string]option{
-					"except":         {},
-					"force_tcp":      {},
-					"prefer_udp":     {},
-					"expire":         {},
-					"max_fails":      {},
-					"tls":            {},
-					"tls_servername": {},
-					"policy":         {},
-					"health_check":   {},
-				},
-			},
-			"cache": {
-				namedOptions: map[string]option{
-					"success":  {},
-					"denial":   {},
-					"prefetch": {},
-				},
-			},
+			"forward": plugins["forward"]["v2"],
+			"cache": plugins["cache"]["v1"],
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
-			"hosts":       hostPluginv1,
+			"hosts":       plugins["hosts"]["v1"],
 		},
 		postProcess: breakForwardStubDomainsIntoServerBlocks,
 	},
@@ -934,48 +376,12 @@ var Versions = map[string]release{
 		priorVersion:   "1.3.1",
 		dockerImageSHA: "70a92e9f6fc604f9b629ca331b6135287244a86612f550941193ec7e12759417",
 		plugins: map[string]plugin{
-			"errors": {
-				namedOptions: map[string]option{
-					"consolidate": {},
-				},
-			},
-			"log": {
-				namedOptions: map[string]option{
-					"class": {},
-				},
-			},
-			"health":   {},
+			"errors":   plugins["errors"]["v2"],
+			"log":      plugins["log"]["v1"],
+			"health":   plugins["health"]["v1"],
 			"autopath": {},
-			"kubernetes": {
-				namedOptions: map[string]option{
-					"resyncperiod": {},
-					"endpoint": {
-						status: ignored,
-						action: useFirstArgumentOnly,
-					},
-					"tls":                {},
-					"kubeconfig":         {},
-					"namespaces":         {},
-					"labels":             {},
-					"pods":               {},
-					"endpoint_pod_names": {},
-					"upstream": {
-						status: deprecated,
-						action: removeOption,
-					},
-					"ttl":         {},
-					"noendpoints": {},
-					"transfer":    {},
-					"fallthrough": {},
-					"ignore":      {},
-				},
-			},
-			"k8s_external": {
-				namedOptions: map[string]option{
-					"apex": {},
-					"ttl":  {},
-				},
-			},
+			"kubernetes": plugins["kubernetes"]["v4"],
+			"k8s_external": plugins["k8s_external"]["v1"],
 			"prometheus": {},
 			"proxy": {
 				status:       deprecated,
@@ -983,30 +389,12 @@ var Versions = map[string]release{
 				action:       proxyToForwardPluginAction,
 				namedOptions: proxyToForwardOptionsMigrations,
 			},
-			"forward": {
-				namedOptions: map[string]option{
-					"except":         {},
-					"force_tcp":      {},
-					"prefer_udp":     {},
-					"expire":         {},
-					"max_fails":      {},
-					"tls":            {},
-					"tls_servername": {},
-					"policy":         {},
-					"health_check":   {},
-				},
-			},
-			"cache": {
-				namedOptions: map[string]option{
-					"success":  {},
-					"denial":   {},
-					"prefetch": {},
-				},
-			},
+			"forward": plugins["forward"]["v2"],
+			"cache": plugins["cache"]["v1"],
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
-			"hosts":       hostPluginv1,
+			"hosts":       plugins["hosts"]["v1"],
 		},
 		postProcess: breakForwardStubDomainsIntoServerBlocks,
 	},
@@ -1032,45 +420,12 @@ var Versions = map[string]release{
     loadbalance
 }`,
 		plugins: map[string]plugin{
-			"errors": {
-				namedOptions: map[string]option{
-					"consolidate": {},
-				},
-			},
-			"log": {
-				namedOptions: map[string]option{
-					"class": {},
-				},
-			},
-			"health":   {},
+			"errors":   plugins["errors"]["v2"],
+			"log":      plugins["log"]["v1"],
+			"health":   plugins["health"]["v1"],
 			"autopath": {},
-			"kubernetes": {
-				namedOptions: map[string]option{
-					"resyncperiod": {},
-					"endpoint": {
-						status: deprecated,
-						action: useFirstArgumentOnly,
-					},
-					"tls":                {},
-					"kubeconfig":         {},
-					"namespaces":         {},
-					"labels":             {},
-					"pods":               {},
-					"endpoint_pod_names": {},
-					"upstream":           {},
-					"ttl":                {},
-					"noendpoints":        {},
-					"transfer":           {},
-					"fallthrough":        {},
-					"ignore":             {},
-				},
-			},
-			"k8s_external": {
-				namedOptions: map[string]option{
-					"apex": {},
-					"ttl":  {},
-				},
-			},
+			"kubernetes": plugins["kubernetes"]["v3"],
+			"k8s_external": plugins["k8s_external"]["v1"],
 			"prometheus": {},
 			"proxy": {
 				namedOptions: map[string]option{
@@ -1083,30 +438,12 @@ var Versions = map[string]release{
 					"protocol":     {},
 				},
 			},
-			"forward": {
-				namedOptions: map[string]option{
-					"except":         {},
-					"force_tcp":      {},
-					"prefer_udp":     {},
-					"expire":         {},
-					"max_fails":      {},
-					"tls":            {},
-					"tls_servername": {},
-					"policy":         {},
-					"health_check":   {},
-				},
-			},
-			"cache": {
-				namedOptions: map[string]option{
-					"success":  {},
-					"denial":   {},
-					"prefetch": {},
-				},
-			},
+			"forward": plugins["forward"]["v2"],
+			"cache": plugins["cache"]["v1"],
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
-			"hosts":       hostPluginv1,
+			"hosts":       plugins["hosts"]["v1"],
 		},
 	},
 	"1.3.0": {
@@ -1114,43 +451,12 @@ var Versions = map[string]release{
 		priorVersion:   "1.2.6",
 		dockerImageSHA: "e030773c7fee285435ed7fc7623532ee54c4c1c4911fb24d95cd0170a8a768bc",
 		plugins: map[string]plugin{
-			"errors": {
-				namedOptions: map[string]option{
-					"consolidate": {},
-				},
-			},
-			"log": {
-				namedOptions: map[string]option{
-					"class": {},
-				},
-			},
-			"health":   {},
+			"errors":   plugins["errors"]["v2"],
+			"log":      plugins["log"]["v1"],
+			"health":   plugins["health"]["v1"],
 			"autopath": {},
-			"kubernetes": {
-				namedOptions: map[string]option{
-					"resyncperiod":       {},
-					"endpoint":           {},
-					"tls":                {},
-					"kubeconfig":         {},
-					"namespaces":         {},
-					"labels":             {},
-					"pods":               {},
-					"endpoint_pod_names": {},
-					"upstream":           {},
-					"ttl":                {},
-					"noendpoints":        {},
-					"transfer":           {},
-					"fallthrough":        {},
-					"ignore":             {},
-				},
-			},
-			"k8s_external": {
-				downAction: removePlugin,
-				namedOptions: map[string]option{
-					"apex": {},
-					"ttl":  {},
-				},
-			},
+			"kubernetes": plugins["kubernetes"]["v2"],
+			"k8s_external": plugins["k8s_external"]["v1"],
 			"prometheus": {},
 			"proxy": {
 				namedOptions: map[string]option{
@@ -1163,30 +469,12 @@ var Versions = map[string]release{
 					"protocol":     {},
 				},
 			},
-			"forward": {
-				namedOptions: map[string]option{
-					"except":         {},
-					"force_tcp":      {},
-					"prefer_udp":     {},
-					"expire":         {},
-					"max_fails":      {},
-					"tls":            {},
-					"tls_servername": {},
-					"policy":         {},
-					"health_check":   {},
-				},
-			},
-			"cache": {
-				namedOptions: map[string]option{
-					"success":  {},
-					"denial":   {},
-					"prefetch": {},
-				},
-			},
+			"forward": plugins["forward"]["v2"],
+			"cache": plugins["cache"]["v1"],
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
-			"hosts":       hostPluginv1,
+			"hosts":       plugins["hosts"]["v1"],
 		},
 	},
 	"1.2.6": {
@@ -1215,31 +503,10 @@ var Versions = map[string]release{
 					"consolidate": {},
 				},
 			},
-			"log": {
-				namedOptions: map[string]option{
-					"class": {},
-				},
-			},
-			"health":   {},
+			"log":      plugins["log"]["v1"],
+			"health":   plugins["health"]["v1"],
 			"autopath": {},
-			"kubernetes": {
-				namedOptions: map[string]option{
-					"resyncperiod":       {},
-					"endpoint":           {},
-					"tls":                {},
-					"kubeconfig":         {},
-					"namespaces":         {},
-					"labels":             {},
-					"pods":               {},
-					"endpoint_pod_names": {},
-					"upstream":           {},
-					"ttl":                {},
-					"noendpoints":        {},
-					"transfer":           {},
-					"fallthrough":        {},
-					"ignore":             {},
-				},
-			},
+			"kubernetes": plugins["kubernetes"]["v2"],
 			"prometheus": {},
 			"proxy": {
 				namedOptions: map[string]option{
@@ -1252,30 +519,12 @@ var Versions = map[string]release{
 					"protocol":     {},
 				},
 			},
-			"forward": {
-				namedOptions: map[string]option{
-					"except":         {},
-					"force_tcp":      {},
-					"prefer_udp":     {},
-					"expire":         {},
-					"max_fails":      {},
-					"tls":            {},
-					"tls_servername": {},
-					"policy":         {},
-					"health_check":   {},
-				},
-			},
-			"cache": {
-				namedOptions: map[string]option{
-					"success":  {},
-					"denial":   {},
-					"prefetch": {},
-				},
-			},
+			"forward": plugins["forward"]["v2"],
+			"cache": plugins["cache"]["v1"],
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
-			"hosts":       hostPluginv1,
+			"hosts":       plugins["hosts"]["v1"],
 		},
 	},
 	"1.2.5": {
@@ -1283,32 +532,11 @@ var Versions = map[string]release{
 		priorVersion:   "1.2.4",
 		dockerImageSHA: "33c8da20b887ae12433ec5c40bfddefbbfa233d5ce11fb067122e68af30291d6",
 		plugins: map[string]plugin{
-			"errors": {},
-			"log": {
-				namedOptions: map[string]option{
-					"class": {},
-				},
-			},
-			"health":   {},
+			"errors":   plugins["errors"]["v1"],
+			"log":      plugins["log"]["v1"],
+			"health":   plugins["health"]["v1"],
 			"autopath": {},
-			"kubernetes": {
-				namedOptions: map[string]option{
-					"resyncperiod":       {},
-					"endpoint":           {},
-					"tls":                {},
-					"kubeconfig":         {},
-					"namespaces":         {},
-					"labels":             {},
-					"pods":               {},
-					"endpoint_pod_names": {},
-					"upstream":           {},
-					"ttl":                {},
-					"noendpoints":        {},
-					"transfer":           {},
-					"fallthrough":        {},
-					"ignore":             {},
-				},
-			},
+			"kubernetes": plugins["kubernetes"]["v2"],
 			"prometheus": {},
 			"proxy": {
 				namedOptions: map[string]option{
@@ -1321,30 +549,12 @@ var Versions = map[string]release{
 					"protocol":     {},
 				},
 			},
-			"forward": {
-				namedOptions: map[string]option{
-					"except":         {},
-					"force_tcp":      {},
-					"prefer_udp":     {},
-					"expire":         {},
-					"max_fails":      {},
-					"tls":            {},
-					"tls_servername": {},
-					"policy":         {},
-					"health_check":   {},
-				},
-			},
-			"cache": {
-				namedOptions: map[string]option{
-					"success":  {},
-					"denial":   {},
-					"prefetch": {},
-				},
-			},
+			"forward": plugins["forward"]["v2"],
+			"cache": plugins["cache"]["v1"],
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
-			"hosts":       hostPluginv1,
+			"hosts":       plugins["hosts"]["v1"],
 		},
 	},
 	"1.2.4": {
@@ -1352,32 +562,11 @@ var Versions = map[string]release{
 		priorVersion:   "1.2.3",
 		dockerImageSHA: "a0d40ad961a714c699ee7b61b77441d165f6252f9fb84ac625d04a8d8554c0ec",
 		plugins: map[string]plugin{
-			"errors": {},
-			"log": {
-				namedOptions: map[string]option{
-					"class": {},
-				},
-			},
-			"health":   {},
+			"errors":   plugins["errors"]["v1"],
+			"log":      plugins["log"]["v1"],
+			"health":   plugins["health"]["v1"],
 			"autopath": {},
-			"kubernetes": {
-				namedOptions: map[string]option{
-					"resyncperiod":       {},
-					"endpoint":           {},
-					"tls":                {},
-					"kubeconfig":         {},
-					"namespaces":         {},
-					"labels":             {},
-					"pods":               {},
-					"endpoint_pod_names": {},
-					"upstream":           {},
-					"ttl":                {},
-					"noendpoints":        {},
-					"transfer":           {},
-					"fallthrough":        {},
-					"ignore":             {},
-				},
-			},
+			"kubernetes": plugins["kubernetes"]["v2"],
 			"prometheus": {},
 			"proxy": {
 				namedOptions: map[string]option{
@@ -1390,30 +579,12 @@ var Versions = map[string]release{
 					"protocol":     {},
 				},
 			},
-			"forward": {
-				namedOptions: map[string]option{
-					"except":         {},
-					"force_tcp":      {},
-					"prefer_udp":     {},
-					"expire":         {},
-					"max_fails":      {},
-					"tls":            {},
-					"tls_servername": {},
-					"policy":         {},
-					"health_check":   {},
-				},
-			},
-			"cache": {
-				namedOptions: map[string]option{
-					"success":  {},
-					"denial":   {},
-					"prefetch": {},
-				},
-			},
+			"forward": plugins["forward"]["v2"],
+			"cache": plugins["cache"]["v1"],
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
-			"hosts":       hostPluginv1,
+			"hosts":       plugins["hosts"]["v1"],
 		},
 	},
 	"1.2.3": {
@@ -1421,32 +592,11 @@ var Versions = map[string]release{
 		priorVersion:   "1.2.2",
 		dockerImageSHA: "12f3cab301c826978fac736fd40aca21ac023102fd7f4aa6b4341ae9ba89e90e",
 		plugins: map[string]plugin{
-			"errors": {},
-			"log": {
-				namedOptions: map[string]option{
-					"class": {},
-				},
-			},
-			"health":   {},
+			"errors":   plugins["errors"]["v1"],
+			"log":      plugins["log"]["v1"],
+			"health":   plugins["health"]["v1"],
 			"autopath": {},
-			"kubernetes": {
-				namedOptions: map[string]option{
-					"resyncperiod":       {},
-					"endpoint":           {},
-					"tls":                {},
-					"kubeconfig":         {},
-					"namespaces":         {},
-					"labels":             {},
-					"pods":               {},
-					"endpoint_pod_names": {},
-					"upstream":           {},
-					"ttl":                {},
-					"noendpoints":        {},
-					"transfer":           {},
-					"fallthrough":        {},
-					"ignore":             {},
-				},
-			},
+			"kubernetes": plugins["kubernetes"]["v2"],
 			"prometheus": {},
 			"proxy": {
 				namedOptions: map[string]option{
@@ -1459,30 +609,12 @@ var Versions = map[string]release{
 					"protocol":     {},
 				},
 			},
-			"forward": {
-				namedOptions: map[string]option{
-					"except":         {},
-					"force_tcp":      {},
-					"prefer_udp":     {},
-					"expire":         {},
-					"max_fails":      {},
-					"tls":            {},
-					"tls_servername": {},
-					"policy":         {},
-					"health_check":   {},
-				},
-			},
-			"cache": {
-				namedOptions: map[string]option{
-					"success":  {},
-					"denial":   {},
-					"prefetch": {},
-				},
-			},
+			"forward": plugins["forward"]["v2"],
+			"cache": plugins["cache"]["v1"],
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
-			"hosts":       hostPluginv1,
+			"hosts":       plugins["hosts"]["v1"],
 		},
 	},
 	"1.2.2": {
@@ -1506,31 +638,11 @@ var Versions = map[string]release{
     loadbalance
 }`,
 		plugins: map[string]plugin{
-			"errors": {},
-			"log": {
-				namedOptions: map[string]option{
-					"class": {},
-				},
-			},
-			"health":   {},
+			"errors":   plugins["errors"]["v1"],
+			"log":      plugins["log"]["v1"],
+			"health":   plugins["health"]["v1"],
 			"autopath": {},
-			"kubernetes": {
-				namedOptions: map[string]option{
-					"resyncperiod":       {},
-					"endpoint":           {},
-					"tls":                {},
-					"namespaces":         {},
-					"labels":             {},
-					"pods":               {},
-					"endpoint_pod_names": {},
-					"upstream":           {},
-					"ttl":                {},
-					"noendpoints":        {},
-					"transfer":           {},
-					"fallthrough":        {},
-					"ignore":             {},
-				},
-			},
+			"kubernetes": plugins["kubernetes"]["v1"],
 			"prometheus": {},
 			"proxy": {
 				namedOptions: map[string]option{
@@ -1543,30 +655,12 @@ var Versions = map[string]release{
 					"protocol":     {},
 				},
 			},
-			"forward": {
-				namedOptions: map[string]option{
-					"except":         {},
-					"force_tcp":      {},
-					"prefer_udp":     {},
-					"expire":         {},
-					"max_fails":      {},
-					"tls":            {},
-					"tls_servername": {},
-					"policy":         {},
-					"health_check":   {},
-				},
-			},
-			"cache": {
-				namedOptions: map[string]option{
-					"success":  {},
-					"denial":   {},
-					"prefetch": {},
-				},
-			},
+			"forward": plugins["forward"]["v2"],
+			"cache": plugins["cache"]["v1"],
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
-			"hosts":       hostPluginv1,
+			"hosts":       plugins["hosts"]["v1"],
 		},
 	},
 	"1.2.1": {
@@ -1574,31 +668,11 @@ var Versions = map[string]release{
 		priorVersion:   "1.2.0",
 		dockerImageSHA: "fb129c6a7c8912bc6d9cc4505e1f9007c5565ceb1aa6369750e60cc79771a244",
 		plugins: map[string]plugin{
-			"errors": {},
-			"log": {
-				namedOptions: map[string]option{
-					"class": {},
-				},
-			},
-			"health":   {},
+			"errors":   plugins["errors"]["v1"],
+			"log":      plugins["log"]["v1"],
+			"health":   plugins["health"]["v1"],
 			"autopath": {},
-			"kubernetes": {
-				namedOptions: map[string]option{
-					"resyncperiod":       {},
-					"endpoint":           {},
-					"tls":                {},
-					"namespaces":         {},
-					"labels":             {},
-					"pods":               {},
-					"endpoint_pod_names": {},
-					"upstream":           {},
-					"ttl":                {},
-					"noendpoints":        {},
-					"transfer":           {},
-					"fallthrough":        {},
-					"ignore":             {},
-				},
-			},
+			"kubernetes": plugins["kubernetes"]["v1"],
 			"prometheus": {},
 			"proxy": {
 				namedOptions: map[string]option{
@@ -1611,26 +685,8 @@ var Versions = map[string]release{
 					"protocol":     {},
 				},
 			},
-			"forward": {
-				namedOptions: map[string]option{
-					"except":         {},
-					"force_tcp":      {},
-					"prefer_udp":     {},
-					"expire":         {},
-					"max_fails":      {},
-					"tls":            {},
-					"tls_servername": {},
-					"policy":         {},
-					"health_check":   {},
-				},
-			},
-			"cache": {
-				namedOptions: map[string]option{
-					"success":  {},
-					"denial":   {},
-					"prefetch": {},
-				},
-			},
+			"forward": plugins["forward"]["v2"],
+			"cache": plugins["cache"]["v1"],
 			"loop": {
 				status: newdefault,
 				add: func(s *corefile.Server) (*corefile.Server, error) {
@@ -1640,7 +696,7 @@ var Versions = map[string]release{
 			},
 			"reload":      {},
 			"loadbalance": {},
-			"hosts":       hostPluginv1,
+			"hosts":       plugins["hosts"]["v1"],
 		},
 	},
 	"1.2.0": {
@@ -1648,31 +704,11 @@ var Versions = map[string]release{
 		priorVersion:   "1.1.4",
 		dockerImageSHA: "ae69a32f8cc29a3e2af9628b6473f24d3e977950a2cb62ce8911478a61215471",
 		plugins: map[string]plugin{
-			"errors": {},
-			"log": {
-				namedOptions: map[string]option{
-					"class": {},
-				},
-			},
-			"health":   {},
+			"errors":   plugins["errors"]["v1"],
+			"log":      plugins["log"]["v1"],
+			"health":   plugins["health"]["v1"],
 			"autopath": {},
-			"kubernetes": {
-				namedOptions: map[string]option{
-					"resyncperiod":       {},
-					"endpoint":           {},
-					"tls":                {},
-					"namespaces":         {},
-					"labels":             {},
-					"pods":               {},
-					"endpoint_pod_names": {},
-					"upstream":           {},
-					"ttl":                {},
-					"noendpoints":        {},
-					"transfer":           {},
-					"fallthrough":        {},
-					"ignore":             {},
-				},
-			},
+			"kubernetes": plugins["kubernetes"]["v1"],
 			"prometheus": {},
 			"proxy": {
 				namedOptions: map[string]option{
@@ -1688,29 +724,11 @@ var Versions = map[string]release{
 					},
 				},
 			},
-			"forward": {
-				namedOptions: map[string]option{
-					"except":         {},
-					"force_tcp":      {},
-					"prefer_udp":     {},
-					"expire":         {},
-					"max_fails":      {},
-					"tls":            {},
-					"tls_servername": {},
-					"policy":         {},
-					"health_check":   {},
-				},
-			},
-			"cache": {
-				namedOptions: map[string]option{
-					"success":  {},
-					"denial":   {},
-					"prefetch": {},
-				},
-			},
+			"forward": plugins["forward"]["v2"],
+			"cache": plugins["cache"]["v1"],
 			"reload":      {},
 			"loadbalance": {},
-			"hosts":       hostPluginv1,
+			"hosts":       plugins["hosts"]["v1"],
 		},
 	},
 	"1.1.4": {
@@ -1718,31 +736,11 @@ var Versions = map[string]release{
 		priorVersion:   "1.1.3",
 		dockerImageSHA: "463c7021141dd3bfd4a75812f4b735ef6aadc0253a128f15ffe16422abe56e50",
 		plugins: map[string]plugin{
-			"errors": {},
-			"log": {
-				namedOptions: map[string]option{
-					"class": {},
-				},
-			},
-			"health":   {},
+			"errors":   plugins["errors"]["v1"],
+			"log":      plugins["log"]["v1"],
+			"health":   plugins["health"]["v1"],
 			"autopath": {},
-			"kubernetes": {
-				namedOptions: map[string]option{
-					"resyncperiod":       {},
-					"endpoint":           {},
-					"tls":                {},
-					"namespaces":         {},
-					"labels":             {},
-					"pods":               {},
-					"endpoint_pod_names": {},
-					"upstream":           {},
-					"ttl":                {},
-					"noendpoints":        {},
-					"transfer":           {},
-					"fallthrough":        {},
-					"ignore":             {},
-				},
-			},
+			"kubernetes": plugins["kubernetes"]["v1"],
 			"prometheus": {},
 			"proxy": {
 				namedOptions: map[string]option{
@@ -1758,28 +756,11 @@ var Versions = map[string]release{
 					},
 				},
 			},
-			"forward": {
-				namedOptions: map[string]option{
-					"except":         {},
-					"force_tcp":      {},
-					"expire":         {},
-					"max_fails":      {},
-					"tls":            {},
-					"tls_servername": {},
-					"policy":         {},
-					"health_check":   {},
-				},
-			},
-			"cache": {
-				namedOptions: map[string]option{
-					"success":  {},
-					"denial":   {},
-					"prefetch": {},
-				},
-			},
+			"forward": plugins["forward"]["v1"],
+			"cache": plugins["cache"]["v1"],
 			"reload":      {},
 			"loadbalance": {},
-			"hosts":       hostPluginv1,
+			"hosts":       plugins["hosts"]["v1"],
 		},
 	},
 	"1.1.3": {
@@ -1799,19 +780,6 @@ var Versions = map[string]release{
     cache 30
     reload
 }`},
-}
-
-var hostPluginv1 = plugin{
-	namedOptions: map[string]option{
-		"ttl":         {},
-		"no_reverse":  {},
-		"reload":      {},
-		"fallthrough": {},
-	},
-	patternOptions: map[string]option{
-		`\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}`:              {}, // close enough
-		`[0-9A-Fa-f]{1,4}:[:0-9A-Fa-f]+:[0-9A-Fa-f]{1,4}`: {}, // less close, but still close enough
-	},
 }
 
 var proxyToForwardOptionsMigrations = map[string]option{
