@@ -62,7 +62,6 @@ func getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, status string)
 					continue
 				}
 				for _, o := range p.Options {
-					//vo, present := Versions[v].plugins[p.Name].namedOptions[o.Name]
 					vo, present := matchOption(o.Name, Versions[v].plugins[p.Name])
 					if status == unsupported {
 						if present {
@@ -167,7 +166,6 @@ func Migrate(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string, deprecati
 				}
 				newOpts := []*corefile.Option{}
 				for _, o := range p.Options {
-					//vo, present := Versions[v].plugins[p.Name].namedOptions[o.Name]
 					vo, present := matchOption(o.Name, Versions[v].plugins[p.Name])
 					if !present {
 						newOpts = append(newOpts, o)
@@ -294,7 +292,6 @@ func MigrateDown(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string) (stri
 
 				newOpts := []*corefile.Option{}
 				for _, o := range p.Options {
-					//vo, present := Versions[v].plugins[p.Name].namedOptions[o.Name]
 					vo, present := matchOption(o.Name, Versions[v].plugins[p.Name])
 					if !present {
 						newOpts = append(newOpts, o)
