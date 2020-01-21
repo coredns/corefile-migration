@@ -4,12 +4,13 @@ import (
 	"github.com/coredns/corefile-migration/migration/corefile"
 )
 
+// release holds information pertaining to a single CoreDNS release
 type release struct {
-	k8sReleases    []string
-	nextVersion    string
-	priorVersion   string
-	dockerImageSHA string
-	plugins        map[string]plugin // list of plugins with deprecation status and migration actions
+	k8sReleases    []string          // a list of K8s versions that deploy this CoreDNS release by default
+	nextVersion    string            // the next CoreDNS version
+	priorVersion   string            // the prior CoreDNS version
+	dockerImageSHA string            // the docker image SHA for this release
+	plugins        map[string]plugin // map of plugins with deprecation status and migration actions for this release
 
 	// postProcess is a post processing action to take on the corefile as a whole.  Used for complex migration
 	//   tasks that dont fit well into the modular plugin/option migration framework. For example, when the
