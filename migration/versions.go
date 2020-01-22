@@ -382,11 +382,7 @@ var Versions = map[string]release{
     loadbalance
 }`,
 		plugins: map[string]plugin{
-			"errors": {
-				namedOptions: map[string]option{
-					"consolidate": {},
-				},
-			},
+			"errors":      plugins["errors"]["v2"],
 			"log":         plugins["log"]["v1"],
 			"health":      plugins["health"]["v1"],
 			"autopath":    {},
