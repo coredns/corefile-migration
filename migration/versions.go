@@ -32,24 +32,6 @@ var Versions = map[string]release{
 	"1.6.6": {
 		priorVersion:   "1.6.5",
 		dockerImageSHA: "41bee6992c2ed0f4628fcef75751048927bcd6b1cee89c79f6acb63ca5474d5a",
-		defaultConf: `.:53 {
-    errors
-    health {
-        lameduck 5s
-    }
-    kubernetes * *** {
-        pods insecure
-        upstream
-        fallthrough in-addr.arpa ip6.arpa
-        ttl 30
-    }
-    prometheus :9153
-    forward . *
-    cache 30
-    loop
-    reload
-    loadbalance
-}`,
 		plugins: map[string]plugin{
 			"errors":       plugins["errors"]["v2"],
 			"log":          plugins["log"]["v1"],
@@ -70,6 +52,7 @@ var Versions = map[string]release{
 	"1.6.5": {
 		nextVersion:    "1.6.6",
 		priorVersion:   "1.6.4",
+		k8sReleases:    []string{"1.17"},
 		dockerImageSHA: "7ec975f167d815311a7136c32e70735f0d00b73781365df1befd46ed35bd4fe7",
 		defaultConf: `.:53 {
     errors
@@ -78,7 +61,6 @@ var Versions = map[string]release{
     }
     kubernetes * *** {
         pods insecure
-        upstream
         fallthrough in-addr.arpa ip6.arpa
         ttl 30
     }
@@ -151,13 +133,13 @@ var Versions = map[string]release{
 	"1.6.2": {
 		nextVersion:    "1.6.3",
 		priorVersion:   "1.6.1",
+		k8sReleases:    []string{"1.16"},
 		dockerImageSHA: "12eb885b8685b1b13a04ecf5c23bc809c2e57917252fd7b0be9e9c00644e8ee5",
 		defaultConf: `.:53 {
     errors
     health
     kubernetes * *** {
         pods insecure
-        upstream
         fallthrough in-addr.arpa ip6.arpa
         ttl 30
     }
