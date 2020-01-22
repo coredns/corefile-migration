@@ -572,8 +572,12 @@ func TestDeprecated(t *testing.T) {
 
 func TestUnsupported(t *testing.T) {
 	startCorefile := `.:53 {
-    errors
-    health
+    errors {
+        consolidate
+    }
+    health {
+        lameduck
+    }
     kubernetes cluster.local in-addr.arpa ip6.arpa {
         pods insecure
         upstream

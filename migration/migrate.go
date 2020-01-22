@@ -44,17 +44,14 @@ func getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, status string)
 		for _, s := range cf.Servers {
 			for _, p := range s.Plugins {
 				vp, present := Versions[v].plugins[p.Name]
-				if status == unsupported {
-					if present {
-						continue
-					}
+				if status == unsupported && !present {
 					notices = append(notices, Notice{Plugin: p.Name, Severity: status, Version: v})
 					continue
 				}
 				if !present {
 					continue
 				}
-				if vp.status != "" && vp.status != newdefault {
+				if vp.status != "" && vp.status != newdefault && status != unsupported {
 					notices = append(notices, Notice{
 						Plugin:     p.Name,
 						Severity:   vp.status,
@@ -65,7 +62,6 @@ func getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, status string)
 					continue
 				}
 				for _, o := range p.Options {
-					//vo, present := Versions[v].plugins[p.Name].namedOptions[o.Name]
 					vo, present := matchOption(o.Name, Versions[v].plugins[p.Name])
 					if status == unsupported {
 						if present {
@@ -76,8 +72,6 @@ func getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, status string)
 							Option:     o.Name,
 							Severity:   status,
 							Version:    v,
-							ReplacedBy: vo.replacedBy,
-							Additional: vo.additional,
 						})
 						continue
 					}
@@ -170,7 +164,6 @@ func Migrate(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string, deprecati
 				}
 				newOpts := []*corefile.Option{}
 				for _, o := range p.Options {
-					//vo, present := Versions[v].plugins[p.Name].namedOptions[o.Name]
 					vo, present := matchOption(o.Name, Versions[v].plugins[p.Name])
 					if !present {
 						newOpts = append(newOpts, o)
@@ -297,7 +290,6 @@ func MigrateDown(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string) (stri
 
 				newOpts := []*corefile.Option{}
 				for _, o := range p.Options {
-					//vo, present := Versions[v].plugins[p.Name].namedOptions[o.Name]
 					vo, present := matchOption(o.Name, Versions[v].plugins[p.Name])
 					if !present {
 						newOpts = append(newOpts, o)
