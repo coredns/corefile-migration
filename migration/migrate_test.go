@@ -305,7 +305,7 @@ mystub-2.example.org {
 `,
 		},
 		{
-			name:         "handle supported non-default plugins",
+			name:         "handle supported non-default plugins (hosts)",
 			fromVersion:  "1.3.1",
 			toVersion:    "1.6.6",
 			deprecations: true,
@@ -357,6 +357,49 @@ mystub-2.example.org {
         1:2:3::4 goodbye
         ttl 30
     }
+}
+`,
+		},
+		{
+			name:         "handle supported non-default plugins (rewrite)",
+			fromVersion:  "1.2.6",
+			toVersion:    "1.5.0",
+			deprecations: true,
+			startCorefile: `.:53 {
+    errors
+    health
+    loop
+    kubernetes cluster.local in-addr.arpa ip6.arpa {
+        pods insecure
+        fallthrough in-addr.arpa ip6.arpa
+    }
+    prometheus :9153
+    proxy . /etc/resolv.conf
+    cache 30
+    reload
+    loadbalance
+    rewrite continue {
+        ttl regex (.*)\.coredns\.rocks 15
+    }
+}
+`,
+			expectedCorefile: `.:53 {
+    errors
+    health
+    loop
+    kubernetes cluster.local in-addr.arpa ip6.arpa {
+        pods insecure
+        fallthrough in-addr.arpa ip6.arpa
+    }
+    prometheus :9153
+    forward . /etc/resolv.conf
+    cache 30
+    reload
+    loadbalance
+    rewrite continue {
+        ttl regex (.*)\.coredns\.rocks 15
+    }
+    ready
 }
 `,
 		},

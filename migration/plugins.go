@@ -240,6 +240,28 @@ var plugins = map[string]map[string]plugin{
 		},
 	},
 
+	"rewrite": {
+		"v1": plugin{
+			namedOptions: map[string]option{
+				"type":        {},
+				"class":       {},
+				"name":        {},
+				"answer name": {},
+				"edns0":       {},
+			},
+		},
+		"v2": plugin{
+			namedOptions: map[string]option{
+				"type":        {},
+				"class":       {},
+				"name":        {},
+				"answer name": {},
+				"edns0":       {},
+				"ttl":         {}, // new option
+			},
+		},
+	},
+
 	"log": {
 		"v1": plugin{
 			namedOptions: map[string]option{
@@ -346,7 +368,6 @@ var plugins = map[string]map[string]plugin{
 		},
 	},
 }
-
 
 func removePlugin(*corefile.Plugin) (*corefile.Plugin, error) { return nil, nil }
 func removeOption(*corefile.Option) (*corefile.Option, error) { return nil, nil }
