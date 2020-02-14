@@ -47,6 +47,7 @@ var Versions = map[string]release{
 			"reload":       {},
 			"loadbalance":  {},
 			"hosts":        plugins["hosts"]["v1"],
+			"rewrite":      plugins["rewrite"]["v2"],
 		},
 	},
 	"1.6.5": {
@@ -86,6 +87,7 @@ var Versions = map[string]release{
 			"reload":       {},
 			"loadbalance":  {},
 			"hosts":        plugins["hosts"]["v1"],
+			"rewrite":      plugins["rewrite"]["v2"],
 		},
 	},
 	"1.6.4": {
@@ -107,6 +109,7 @@ var Versions = map[string]release{
 			"reload":       {},
 			"loadbalance":  {},
 			"hosts":        plugins["hosts"]["v1"],
+			"rewrite":      plugins["rewrite"]["v2"],
 		},
 	},
 	"1.6.3": {
@@ -128,6 +131,7 @@ var Versions = map[string]release{
 			"reload":       {},
 			"loadbalance":  {},
 			"hosts":        plugins["hosts"]["v1"],
+			"rewrite":      plugins["rewrite"]["v2"],
 		},
 	},
 	"1.6.2": {
@@ -165,6 +169,7 @@ var Versions = map[string]release{
 			"reload":       {},
 			"loadbalance":  {},
 			"hosts":        plugins["hosts"]["v1"],
+			"rewrite":      plugins["rewrite"]["v2"],
 		},
 	},
 	"1.6.1": {
@@ -186,6 +191,7 @@ var Versions = map[string]release{
 			"reload":       {},
 			"loadbalance":  {},
 			"hosts":        plugins["hosts"]["v1"],
+			"rewrite":      plugins["rewrite"]["v2"],
 		},
 	},
 	"1.6.0": {
@@ -207,6 +213,7 @@ var Versions = map[string]release{
 			"reload":       {},
 			"loadbalance":  {},
 			"hosts":        plugins["hosts"]["v1"],
+			"rewrite":      plugins["rewrite"]["v2"],
 		},
 	},
 	"1.5.2": {
@@ -228,6 +235,7 @@ var Versions = map[string]release{
 			"reload":       {},
 			"loadbalance":  {},
 			"hosts":        plugins["hosts"]["v1"],
+			"rewrite":      plugins["rewrite"]["v2"],
 		},
 	},
 	"1.5.1": {
@@ -249,6 +257,7 @@ var Versions = map[string]release{
 			"reload":       {},
 			"loadbalance":  {},
 			"hosts":        plugins["hosts"]["v1"],
+			"rewrite":      plugins["rewrite"]["v2"],
 		},
 	},
 	"1.5.0": {
@@ -277,6 +286,7 @@ var Versions = map[string]release{
 			"reload":       {},
 			"loadbalance":  {},
 			"hosts":        plugins["hosts"]["v1"],
+			"rewrite":      plugins["rewrite"]["v2"],
 		},
 		postProcess: breakForwardStubDomainsIntoServerBlocks,
 	},
@@ -299,6 +309,7 @@ var Versions = map[string]release{
 			"reload":       {},
 			"loadbalance":  {},
 			"hosts":        plugins["hosts"]["v1"],
+			"rewrite":      plugins["rewrite"]["v2"],
 		},
 		postProcess: breakForwardStubDomainsIntoServerBlocks,
 	},
@@ -338,6 +349,7 @@ var Versions = map[string]release{
 			"reload":       {},
 			"loadbalance":  {},
 			"hosts":        plugins["hosts"]["v1"],
+			"rewrite":      plugins["rewrite"]["v2"],
 		},
 	},
 	"1.3.0": {
@@ -359,6 +371,7 @@ var Versions = map[string]release{
 			"reload":       {},
 			"loadbalance":  {},
 			"hosts":        plugins["hosts"]["v1"],
+			"rewrite":      plugins["rewrite"]["v2"],
 		},
 	},
 	"1.2.6": {
@@ -395,6 +408,7 @@ var Versions = map[string]release{
 			"reload":      {},
 			"loadbalance": {},
 			"hosts":       plugins["hosts"]["v1"],
+			"rewrite":     plugins["rewrite"]["v2"],
 		},
 	},
 	"1.2.5": {
@@ -415,6 +429,7 @@ var Versions = map[string]release{
 			"reload":      {},
 			"loadbalance": {},
 			"hosts":       plugins["hosts"]["v1"],
+			"rewrite":     plugins["rewrite"]["v2"],
 		},
 	},
 	"1.2.4": {
@@ -435,6 +450,7 @@ var Versions = map[string]release{
 			"reload":      {},
 			"loadbalance": {},
 			"hosts":       plugins["hosts"]["v1"],
+			"rewrite":     plugins["rewrite"]["v2"],
 		},
 	},
 	"1.2.3": {
@@ -455,6 +471,7 @@ var Versions = map[string]release{
 			"reload":      {},
 			"loadbalance": {},
 			"hosts":       plugins["hosts"]["v1"],
+			"rewrite":     plugins["rewrite"]["v2"],
 		},
 	},
 	"1.2.2": {
@@ -491,6 +508,7 @@ var Versions = map[string]release{
 			"reload":      {},
 			"loadbalance": {},
 			"hosts":       plugins["hosts"]["v1"],
+			"rewrite":     plugins["rewrite"]["v1"],
 		},
 	},
 	"1.2.1": {
@@ -517,6 +535,7 @@ var Versions = map[string]release{
 			"reload":      {},
 			"loadbalance": {},
 			"hosts":       plugins["hosts"]["v1"],
+			"rewrite":     plugins["rewrite"]["v1"],
 		},
 	},
 	"1.2.0": {
@@ -536,6 +555,7 @@ var Versions = map[string]release{
 			"reload":      {},
 			"loadbalance": {},
 			"hosts":       plugins["hosts"]["v1"],
+			"rewrite":     plugins["rewrite"]["v1"],
 		},
 	},
 	"1.1.4": {
@@ -555,6 +575,7 @@ var Versions = map[string]release{
 			"reload":      {},
 			"loadbalance": {},
 			"hosts":       plugins["hosts"]["v1"],
+			"rewrite":     plugins["rewrite"]["v1"],
 		},
 	},
 	"1.1.3": {
