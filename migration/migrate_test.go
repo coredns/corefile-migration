@@ -29,6 +29,7 @@ func TestMigrate(t *testing.T) {
     prometheus :9153
     proxy . /etc/resolv.conf {
        max_fails
+       policy least_conn
     }
     cache 30
     reload
@@ -44,7 +45,50 @@ func TestMigrate(t *testing.T) {
         fallthrough in-addr.arpa ip6.arpa
     }
     prometheus :9153
-    forward . /etc/resolv.conf
+    forward . /etc/resolv.conf {
+        force_tcp
+    }
+    cache 30
+    reload
+    loadbalance
+    ready
+}
+`,
+		},
+		{
+			name:         "replace proxy options",
+			fromVersion:  "1.3.1",
+			toVersion:    "1.5.0",
+			deprecations: true,
+			startCorefile: `.:53 {
+    errors
+    health
+    loop
+    kubernetes cluster.local in-addr.arpa ip6.arpa {
+        pods insecure
+        fallthrough in-addr.arpa ip6.arpa
+    }
+    prometheus :9153
+    proxy . /etc/resolv.conf {
+       protocol force_tcp insecure
+    }
+    cache 30
+    reload
+    loadbalance
+}
+`,
+			expectedCorefile: `.:53 {
+    errors
+    health
+    loop
+    kubernetes cluster.local in-addr.arpa ip6.arpa {
+        pods insecure
+        fallthrough in-addr.arpa ip6.arpa
+    }
+    prometheus :9153
+    forward . /etc/resolv.conf {
+        force_tcp
+    }
     cache 30
     reload
     loadbalance

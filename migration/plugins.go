@@ -415,7 +415,7 @@ func addOptionToPlugin(pl *corefile.Plugin, newOption *corefile.Option) (*corefi
 var proxyToForwardOptionsMigrations = map[string]option{
 	"policy": {
 		action: func(o *corefile.Option) (*corefile.Option, error) {
-			if len(o.Args) == 2 && o.Args[1] == "least_conn" {
+			if len(o.Args) == 1 && o.Args[0] == "least_conn" {
 				o.Name = "force_tcp"
 				o.Args = nil
 			}
@@ -429,7 +429,7 @@ var proxyToForwardOptionsMigrations = map[string]option{
 	"spray":        {action: removeOption},
 	"protocol": {
 		action: func(o *corefile.Option) (*corefile.Option, error) {
-			if len(o.Args) >= 2 && o.Args[1] == "force_tcp" {
+			if len(o.Args) >= 2 && o.Args[0] == "force_tcp" {
 				o.Name = "force_tcp"
 				o.Args = nil
 				return o, nil
