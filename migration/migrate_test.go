@@ -658,25 +658,41 @@ func TestDeprecated(t *testing.T) {
         pods insecure
         upstream
         fallthrough in-addr.arpa ip6.arpa
+        resyncperiod
     }
     prometheus :9153
     proxy . /etc/resolv.conf
     cache 30
-    loop
     reload
     loadbalance
 }
 `
 
 	expected := []Notice{
+		{Plugin: "loop", Severity: newdefault, Version: "1.2.1"},
 		{Plugin: "kubernetes", Option: "upstream", Severity: deprecated, Version: "1.4.0"},
 		{Plugin: "proxy", Severity: deprecated, ReplacedBy: "forward", Version: "1.4.0"},
 		{Option: "upstream", Plugin: "kubernetes", Severity: ignored, Version: "1.5.0"},
+		{Plugin: "kubernetes", Option: "resyncperiod", Severity: deprecated, Version: "1.5.0"},
 		{Plugin: "proxy", Severity: removed, ReplacedBy: "forward", Version: "1.5.0"},
 		{Plugin: "ready", Severity: newdefault, Version: "1.5.0"},
+		{Option: "upstream", Plugin: "kubernetes", Severity: ignored, Version: "1.5.1"},
+		{Plugin: "kubernetes", Option: "resyncperiod", Severity: deprecated, Version: "1.5.1"},
+		{Option: "upstream", Plugin: "kubernetes", Severity: ignored, Version: "1.5.2"},
+		{Plugin: "kubernetes", Option: "resyncperiod", Severity: deprecated, Version: "1.5.2"},
+		{Option: "upstream", Plugin: "kubernetes", Severity: ignored, Version: "1.6.0"},
+		{Plugin: "kubernetes", Option: "resyncperiod", Severity: removed, Version: "1.6.0"},
+		{Option: "upstream", Plugin: "kubernetes", Severity: ignored, Version: "1.6.1"},
+		{Option: "upstream", Plugin: "kubernetes", Severity: ignored, Version: "1.6.2"},
+		{Option: "upstream", Plugin: "kubernetes", Severity: ignored, Version: "1.6.3"},
+		{Option: "upstream", Plugin: "kubernetes", Severity: ignored, Version: "1.6.4"},
+		{Plugin: "health", Option: "lameduck", Severity: newdefault, Version: "1.6.5"},
+		{Option: "upstream", Plugin: "kubernetes", Severity: ignored, Version: "1.6.5"},
+		{Option: "upstream", Plugin: "kubernetes", Severity: ignored, Version: "1.6.6"},
+		{Option: "upstream", Plugin: "kubernetes", Severity: ignored, Version: "1.6.7"},
 	}
 
-	result, err := Deprecated("1.2.0", "1.5.0", startCorefile)
+	result, err := Deprecated("1.1.3", "1.6.7", startCorefile)
 
 	if err != nil {
 		t.Fatal(err)
@@ -703,7 +719,16 @@ func TestDeprecated(t *testing.T) {
 }
 
 func TestUnsupported(t *testing.T) {
-	startCorefile := `.:53 {
+	testCases := []struct {
+		name          string
+		fromVersion   string
+		toVersion     string
+		startCorefile string
+		expected      []Notice
+	}{
+		{
+			name: "Unsupported route53",
+			startCorefile: `.:53 {
     errors {
         consolidate
     }
@@ -723,46 +748,113 @@ func TestUnsupported(t *testing.T) {
     reload
     loadbalance
 }
-`
-
-	expected := []Notice{
-		{Plugin: "route53", Severity: unsupported, Version: "1.4.0"},
-		{Plugin: "route53", Severity: unsupported, Version: "1.5.0"},
+`,
+			fromVersion: "1.3.1",
+			toVersion:   "1.5.0",
+			expected: []Notice{
+				{Plugin: "route53", Severity: unsupported, Version: "1.4.0"},
+				{Plugin: "route53", Severity: unsupported, Version: "1.5.0"},
+			},
+		},
+		{
+			name: "Unsupported route53 - same coredns version",
+			startCorefile: `.:53 {
+    errors {
+        consolidate
+    }
+    health {
+        lameduck
+    }
+    kubernetes cluster.local in-addr.arpa ip6.arpa {
+        pods insecure
+        upstream
+        fallthrough in-addr.arpa ip6.arpa
+    }
+    route53 example.org.:Z1Z2Z3Z4DZ5Z6Z7
+    prometheus :9153
+    proxy . /etc/resolv.conf
+    cache 30
+    loop
+    reload
+    loadbalance
+}
+`,
+			fromVersion: "1.3.1",
+			toVersion:   "1.3.1",
+			expected: []Notice{
+				{Plugin: "route53", Severity: unsupported, Version: "1.3.1"},
+			},
+		},
+		{
+			name: "Wrong plugin option",
+			startCorefile: `.:53 {
+    errors
+    health
+    kubernetes cluster.local in-addr.arpa ip6.arpa {
+        moo insecure
+        upstream
+        fallthrough in-addr.arpa ip6.arpa
+    }
+    prometheus :9153
+    proxy . /etc/resolv.conf
+    cache 30
+    loop
+    reload
+    loadbalance
+}
+`,
+			fromVersion: "1.3.1",
+			toVersion:   "1.5.0",
+			expected: []Notice{
+				{Option: "moo", Plugin: "kubernetes", Severity: unsupported, Version: "1.4.0"},
+				{Option: "moo", Plugin: "kubernetes", Severity: unsupported, Version: "1.5.0"},
+			},
+		},
+		{
+			name: "Invalid Plugin",
+			startCorefile: `.:53 {
+    errors
+    health
+    kubernetes cluster.local in-addr.arpa ip6.arpa {
+        pods insecure
+        upstream
+        fallthrough in-addr.arpa ip6.arpa
+    }
+    invalid
+    prometheus :9153
+    forward . /etc/resolv.conf
+    cache 30
+    loop
+    reload
+    loadbalance
+}
+`,
+			fromVersion: "1.6.6",
+			toVersion:   "1.6.7",
+			expected: []Notice{
+				{Plugin: "invalid", Severity: unsupported, Version: "1.6.7"},
+			},
+		},
 	}
 
-	result, err := Unsupported("1.3.1", "1.5.0", startCorefile)
+	for _, testCase := range testCases {
+		t.Run(testCase.name, func(t *testing.T) {
+			result, err := Unsupported(testCase.fromVersion, testCase.toVersion, testCase.startCorefile)
 
-	if err != nil {
-		t.Fatal(err)
-	}
+			if err != nil {
+				t.Fatal(err)
+			}
 
-	if len(result) != len(expected) {
-		t.Fatalf("expected to find %v deprecations; got %v", len(expected), len(result))
-	}
+			if len(result) != len(testCase.expected) {
+				t.Fatalf("expected to find %v deprecations; got %v", len(testCase.expected), len(result))
+			}
 
-	for i, dep := range expected {
-		if result[i].ToString() != dep.ToString() {
-			t.Errorf("expected to get '%v'; got '%v'", dep.ToString(), result[i].ToString())
-		}
-	}
-
-	expected = []Notice{
-		{Plugin: "route53", Severity: unsupported, Version: "1.3.1"},
-	}
-	result, err = Unsupported("1.3.1", "1.3.1", startCorefile)
-
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if len(result) != len(expected) {
-		t.Fatalf("expected to find %v deprecations; got %v", len(expected), len(result))
-	}
-
-	for i, dep := range expected {
-		if result[i].ToString() != dep.ToString() {
-			t.Errorf("expected to get '%v'; got '%v'", dep.ToString(), result[i].ToString())
-		}
+			for i, dep := range testCase.expected {
+				if result[i].ToString() != dep.ToString() {
+					t.Errorf("expected to get '%v'; got '%v'", dep.ToString(), result[i].ToString())
+				}
+			}
+		})
 	}
 
 }
@@ -791,6 +883,42 @@ func TestDefault(t *testing.T) {
     kubernetes myzone.org in-addr.arpa ip6.arpa {
         pods insecure
         upstream
+        fallthrough in-addr.arpa ip6.arpa
+        ttl 30
+    }
+    prometheus :9153
+    forward . /etc/resolv.conf
+    cache 30
+    loop
+    reload
+    loadbalance
+}
+`,
+		`.:53 {
+    errors
+    health {
+        lameduck 5s
+    }
+    ready
+    kubernetes myzone.org in-addr.arpa ip6.arpa {
+        pods insecure
+        fallthrough in-addr.arpa ip6.arpa
+        ttl 30
+    }
+    prometheus :9153
+    forward . /etc/resolv.conf
+    cache 30
+    loop
+    reload
+    loadbalance
+}
+`,
+		`.:53 {
+    errors
+    health
+    ready
+    kubernetes myzone.org in-addr.arpa ip6.arpa {
+        pods insecure
         fallthrough in-addr.arpa ip6.arpa
         ttl 30
     }
