@@ -68,10 +68,10 @@ func getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, status string)
 							continue
 						}
 						notices = append(notices, Notice{
-							Plugin:     p.Name,
-							Option:     o.Name,
-							Severity:   status,
-							Version:    v,
+							Plugin:   p.Name,
+							Option:   o.Name,
+							Severity: status,
+							Version:  v,
 						})
 						continue
 					}
@@ -152,16 +152,6 @@ func Migrate(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string, deprecati
 					newPlugs = append(newPlugs, p)
 					continue
 				}
-				if vp.action != nil {
-					p, err := vp.action(p)
-					if err != nil {
-						return "", err
-					}
-					if p == nil {
-						// remove plugin, skip options processing
-						continue
-					}
-				}
 				newOpts := []*corefile.Option{}
 				for _, o := range p.Options {
 					vo, present := matchOption(o.Name, Versions[v].plugins[p.Name])
@@ -186,6 +176,16 @@ func Migrate(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string, deprecati
 						continue
 					}
 					newOpts = append(newOpts, o)
+				}
+				if vp.action != nil {
+					p, err := vp.action(p)
+					if err != nil {
+						return "", err
+					}
+					if p == nil {
+						// remove plugin, skip options processing
+						continue
+					}
 				}
 				newPlug := &corefile.Plugin{
 					Name:    p.Name,

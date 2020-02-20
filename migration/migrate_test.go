@@ -14,6 +14,46 @@ func TestMigrate(t *testing.T) {
 		expectedCorefile string
 	}{
 		{
+			name:         "replace/remove proxy options",
+			fromVersion:  "1.3.1",
+			toVersion:    "1.5.0",
+			deprecations: true,
+			startCorefile: `.:53 {
+    errors
+    health
+    loop
+    kubernetes cluster.local in-addr.arpa ip6.arpa {
+        pods insecure
+        fallthrough in-addr.arpa ip6.arpa
+    }
+    prometheus :9153
+    proxy . /etc/resolv.conf {
+       max_fails
+    }
+    cache 30
+    reload
+    loadbalance
+}
+`,
+			expectedCorefile: `.:53 {
+    errors
+    health
+    loop
+    kubernetes cluster.local in-addr.arpa ip6.arpa {
+        pods insecure
+        fallthrough in-addr.arpa ip6.arpa
+    }
+    prometheus :9153
+    forward . /etc/resolv.conf
+    cache 30
+    reload
+    loadbalance
+    ready
+}
+`,
+		},
+		{
+
 			name:         "Add lameduck option to health plugin",
 			fromVersion:  "1.6.2",
 			toVersion:    "1.6.6",
