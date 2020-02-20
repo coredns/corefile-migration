@@ -28,7 +28,11 @@ func TestMigrate(t *testing.T) {
     }
     prometheus :9153
     proxy . /etc/resolv.conf {
+       except
+       fail_timeout
        max_fails
+       health_check
+       spray
        policy least_conn
     }
     cache 30
@@ -46,6 +50,7 @@ func TestMigrate(t *testing.T) {
     }
     prometheus :9153
     forward . /etc/resolv.conf {
+        except
         force_tcp
     }
     cache 30
