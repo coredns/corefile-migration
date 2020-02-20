@@ -664,12 +664,12 @@ func TestDeprecated(t *testing.T) {
     proxy . /etc/resolv.conf
     cache 30
     reload
+    loop
     loadbalance
 }
 `
 
 	expected := []Notice{
-		{Plugin: "loop", Severity: newdefault, Version: "1.2.1"},
 		{Plugin: "kubernetes", Option: "upstream", Severity: deprecated, Version: "1.4.0"},
 		{Plugin: "proxy", Severity: deprecated, ReplacedBy: "forward", Version: "1.4.0"},
 		{Option: "upstream", Plugin: "kubernetes", Severity: ignored, Version: "1.5.0"},
