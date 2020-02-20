@@ -95,19 +95,19 @@ func TestPlugin_FindMatch(t *testing.T) {
 
 func TestOption_FindMatch(t *testing.T) {
 	tests := []struct {
-		option *Plugin
+		option *Option
 		match  bool
 	}{
-		{option: &Plugin{Name: "option1", Args: []string{}}, match: true},
-		{option: &Plugin{Name: "option2", Args: []string{"1", "1.5", "2"}}, match: true},
-		{option: &Plugin{Name: "option3", Args: []string{"1", "2", "3", "4"}}, match: true},
-		{option: &Plugin{Name: "option1", Args: []string{"a"}}, match: false},
-		{option: &Plugin{Name: "option2", Args: []string{"1", "1.5", "b"}}, match: false},
-		{option: &Plugin{Name: "option3", Args: []string{"a", "2", "3", "4"}}, match: false},
-		{option: &Plugin{Name: "option4", Args: []string{}}, match: false},
+		{option: &Option{Name: "option1", Args: []string{}}, match: true},
+		{option: &Option{Name: "option2", Args: []string{"1", "1.5", "2"}}, match: true},
+		{option: &Option{Name: "option3", Args: []string{"1", "2", "3", "4"}}, match: true},
+		{option: &Option{Name: "option1", Args: []string{"a"}}, match: false},
+		{option: &Option{Name: "option2", Args: []string{"1", "1.5", "b"}}, match: false},
+		{option: &Option{Name: "option3", Args: []string{"a", "2", "3", "4"}}, match: false},
+		{option: &Option{Name: "option4", Args: []string{}}, match: false},
 	}
 
-	def := []*Plugin{
+	def := []*Option{
 		{Name: "option1", Args: []string{}},
 		{Name: "option2", Args: []string{"1", "*", "2"}},
 		{Name: "option3", Args: []string{"1", "***"}},
