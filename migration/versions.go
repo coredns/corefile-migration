@@ -38,7 +38,7 @@ var Versions = map[string]release{
     health {
         lameduck 5s
     }
-    readyw
+    ready
     kubernetes * *** {
         pods insecure
         fallthrough in-addr.arpa ip6.arpa
