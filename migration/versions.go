@@ -38,6 +38,7 @@ var Versions = map[string]release{
     health {
         lameduck 5s
     }
+    ready
     kubernetes * *** {
         pods insecure
         fallthrough in-addr.arpa ip6.arpa
@@ -100,6 +101,7 @@ var Versions = map[string]release{
     health {
         lameduck 5s
     }
+    ready
     kubernetes * *** {
         pods insecure
         fallthrough in-addr.arpa ip6.arpa
@@ -182,6 +184,7 @@ var Versions = map[string]release{
 		defaultConf: `.:53 {
     errors
     health
+    ready
     kubernetes * *** {
         pods insecure
         fallthrough in-addr.arpa ip6.arpa
