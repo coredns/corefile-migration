@@ -27,7 +27,7 @@ func Unsupported(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string) ([]No
 }
 
 func getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, status string) ([]Notice, error) {
-	err := validUpMigration(fromCoreDNSVersion, toCoreDNSVersion)
+	err := ValidUpMigration(fromCoreDNSVersion, toCoreDNSVersion)
 	if err != nil {
 		return nil, err
 	}
@@ -128,7 +128,7 @@ func Migrate(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string, deprecati
 	if fromCoreDNSVersion == toCoreDNSVersion {
 		return corefileStr, nil
 	}
-	err := validUpMigration(fromCoreDNSVersion, toCoreDNSVersion)
+	err := ValidUpMigration(fromCoreDNSVersion, toCoreDNSVersion)
 	if err != nil {
 		return "", err
 	}
@@ -404,14 +404,7 @@ func ValidVersions() []string {
 	return vStrs
 }
 
-func validateVersion(fromCoreDNSVersion string) error {
-	if _, ok := Versions[fromCoreDNSVersion]; !ok {
-		return fmt.Errorf("start version '%v' not supported", fromCoreDNSVersion)
-	}
-	return nil
-}
-
-func validUpMigration(fromCoreDNSVersion, toCoreDNSVersion string) error {
+func ValidUpMigration(fromCoreDNSVersion, toCoreDNSVersion string) error {
 
 	err := validateVersion(fromCoreDNSVersion)
 	if err != nil {
@@ -427,6 +420,13 @@ func validUpMigration(fromCoreDNSVersion, toCoreDNSVersion string) error {
 		return nil
 	}
 	return fmt.Errorf("cannot migrate up to '%v' from '%v'", toCoreDNSVersion, fromCoreDNSVersion)
+}
+
+func validateVersion(fromCoreDNSVersion string) error {
+	if _, ok := Versions[fromCoreDNSVersion]; !ok {
+		return fmt.Errorf("start version '%v' not supported", fromCoreDNSVersion)
+	}
+	return nil
 }
 
 func validDownMigration(fromCoreDNSVersion, toCoreDNSVersion string) error {
