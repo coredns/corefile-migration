@@ -6,6 +6,7 @@ package migration
 // helper functions that make this easier to implement.
 
 import (
+	"errors"
 	"fmt"
 	"regexp"
 	"sort"
@@ -392,6 +393,16 @@ func Released(dockerImageSHA string) bool {
 		}
 	}
 	return false
+}
+
+// VersionFromSHA returns the version string matching the dockerImageSHA.
+func VersionFromSHA(dockerImageSHA string) (string, error) {
+	for vStr, v := range Versions {
+		if v.dockerImageSHA == dockerImageSHA {
+			return vStr, nil
+		}
+	}
+	return "", errors.New("sha unsupported")
 }
 
 // ValidVersions returns a list of all versions defined

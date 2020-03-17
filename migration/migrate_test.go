@@ -1065,3 +1065,28 @@ func TestMatchOption(t *testing.T) {
 	}
 
 }
+
+func TestVersionFromSHA(t *testing.T) {
+	testCases := []struct {
+		sha      string
+		version string
+		shouldErr bool
+	}{
+		{ "2c8d61c46f484d881db43b34d13ca47a269336e576c81cf007ca740fa9ec0800", "1.6.7",false},
+		{ "blah", "",true},
+	}
+
+	for _, tc := range testCases {
+		ver, err := VersionFromSHA(tc.sha)
+
+		if !tc.shouldErr && err != nil {
+			t.Fatalf("expected '%v' to not error.", tc.sha)
+		}
+		if tc.shouldErr && err == nil {
+			t.Fatalf("expected '%v' to error.", tc.sha)
+		}
+		if tc.version != ver {
+			t.Fatalf("expected '%v' to result in '%v', got '%v'.", tc.sha, tc.version, ver)
+		}
+	}
+}
