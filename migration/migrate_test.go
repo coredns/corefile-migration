@@ -995,7 +995,7 @@ func TestValidUpMigration(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		err := validUpMigration(tc.from, tc.to)
+		err := ValidUpMigration(tc.from, tc.to)
 
 		if !tc.shouldErr && err != nil {
 			t.Errorf("expected '%v' to '%v' to be valid versions.", tc.from, tc.to)
