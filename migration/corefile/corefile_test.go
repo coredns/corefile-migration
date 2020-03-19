@@ -25,6 +25,12 @@ func TestCorefile(t *testing.T) {
 .:5353 {
     proxy . /etc/resolv.conf
 }
+
+"exam ple.com:53" {
+    exampleplug "arg \"1\"" {
+        option1 "my arg1" arg2 "arg \"three\""
+    }
+}
 `
 	c, err := New(startCorefile)
 
