@@ -28,7 +28,12 @@ func TestCorefile(t *testing.T) {
 
 "exam ple.com:53" {
     exampleplug "arg \"1\"" {
-        option1 "my arg1" arg2 "arg \"three\""
+        option1 "my arg1" arg2 "arg \"three\"" "arg \4"
+    }
+    template ANY A foo.bar.com {
+        match "^([^.]+).A foo.bar.com"
+        answer "{{ .Name }} 59 IN CNAME foo2.bar.com"
+        upstream 127.0.0.1:53
     }
 }
 `
