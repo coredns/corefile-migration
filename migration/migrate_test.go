@@ -681,18 +681,29 @@ func TestDeprecated(t *testing.T) {
 		{Option: "upstream", Plugin: "kubernetes", Severity: ignored, Version: "1.5.2"},
 		{Plugin: "kubernetes", Option: "resyncperiod", Severity: deprecated, Version: "1.5.2"},
 		{Option: "upstream", Plugin: "kubernetes", Severity: ignored, Version: "1.6.0"},
-		{Plugin: "kubernetes", Option: "resyncperiod", Severity: removed, Version: "1.6.0"},
+		{Plugin: "kubernetes", Option: "resyncperiod", Severity: ignored, Version: "1.6.0"},
 		{Option: "upstream", Plugin: "kubernetes", Severity: ignored, Version: "1.6.1"},
+		{Plugin: "kubernetes", Option: "resyncperiod", Severity: ignored, Version: "1.6.1"},
 		{Option: "upstream", Plugin: "kubernetes", Severity: ignored, Version: "1.6.2"},
+		{Plugin: "kubernetes", Option: "resyncperiod", Severity: ignored, Version: "1.6.2"},
 		{Option: "upstream", Plugin: "kubernetes", Severity: ignored, Version: "1.6.3"},
+		{Plugin: "kubernetes", Option: "resyncperiod", Severity: ignored, Version: "1.6.3"},
 		{Option: "upstream", Plugin: "kubernetes", Severity: ignored, Version: "1.6.4"},
+		{Plugin: "kubernetes", Option: "resyncperiod", Severity: ignored, Version: "1.6.4"},
 		{Plugin: "health", Option: "lameduck", Severity: newdefault, Version: "1.6.5"},
 		{Option: "upstream", Plugin: "kubernetes", Severity: ignored, Version: "1.6.5"},
+		{Plugin: "kubernetes", Option: "resyncperiod", Severity: ignored, Version: "1.6.5"},
 		{Option: "upstream", Plugin: "kubernetes", Severity: ignored, Version: "1.6.6"},
+		{Plugin: "kubernetes", Option: "resyncperiod", Severity: ignored, Version: "1.6.6"},
 		{Option: "upstream", Plugin: "kubernetes", Severity: ignored, Version: "1.6.7"},
+		{Plugin: "kubernetes", Option: "resyncperiod", Severity: ignored, Version: "1.6.7"},
+		{Option: "upstream", Plugin: "kubernetes", Severity: ignored, Version: "1.6.9"},
+		{Plugin: "kubernetes", Option: "resyncperiod", Severity: ignored, Version: "1.6.9"},
+		{Option: "upstream", Plugin: "kubernetes", Severity: removed, Version: "1.7.0"},
+		{Plugin: "kubernetes", Option: "resyncperiod", Severity: removed, Version: "1.7.0"},
 	}
 
-	result, err := Deprecated("1.1.3", "1.6.7", startCorefile)
+	result, err := Deprecated("1.1.3", "1.7.0", startCorefile)
 
 	if err != nil {
 		t.Fatal(err)
@@ -1068,12 +1079,12 @@ func TestMatchOption(t *testing.T) {
 
 func TestVersionFromSHA(t *testing.T) {
 	testCases := []struct {
-		sha      string
-		version string
+		sha       string
+		version   string
 		shouldErr bool
 	}{
-		{ "2c8d61c46f484d881db43b34d13ca47a269336e576c81cf007ca740fa9ec0800", "1.6.7",false},
-		{ "blah", "",true},
+		{"2c8d61c46f484d881db43b34d13ca47a269336e576c81cf007ca740fa9ec0800", "1.6.7", false},
+		{"blah", "", true},
 	}
 
 	for _, tc := range testCases {

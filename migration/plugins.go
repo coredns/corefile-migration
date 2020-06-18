@@ -146,8 +146,8 @@ var plugins = map[string]map[string]plugin{
 		},
 		"v6": plugin{
 			namedOptions: map[string]option{
-				"resyncperiod": { // new removal
-					status: removed,
+				"resyncperiod": { // now ignored
+					status: ignored,
 					action: removeOption,
 				},
 				"endpoint": {
@@ -173,30 +173,10 @@ var plugins = map[string]map[string]plugin{
 		},
 		"v7": plugin{
 			namedOptions: map[string]option{
-				// resyncperiod removed
-				"endpoint": {
-					status: ignored,
-					action: useFirstArgumentOnly,
-				},
-				"tls":                {},
-				"kubeconfig":         {},
-				"namespaces":         {},
-				"labels":             {},
-				"pods":               {},
-				"endpoint_pod_names": {},
-				"upstream": {
-					status: ignored,
+				"resyncperiod": { // new removal
+					status: removed,
 					action: removeOption,
 				},
-				"ttl":         {},
-				"noendpoints": {},
-				"transfer":    {},
-				"fallthrough": {},
-				"ignore":      {},
-			},
-		},
-		"v8": plugin{
-			namedOptions: map[string]option{
 				"endpoint": {
 					status: ignored,
 					action: useFirstArgumentOnly,
