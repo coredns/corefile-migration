@@ -195,6 +195,29 @@ var plugins = map[string]map[string]plugin{
 				"ignore":      {},
 			},
 		},
+		"v8": plugin{
+			namedOptions: map[string]option{
+				"endpoint": {
+					status: ignored,
+					action: useFirstArgumentOnly,
+				},
+				"tls":                {},
+				"kubeconfig":         {},
+				"namespaces":         {},
+				"labels":             {},
+				"pods":               {},
+				"endpoint_pod_names": {},
+				"upstream": { // new removal
+					status: removed,
+					action: removeOption,
+				},
+				"ttl":         {},
+				"noendpoints": {},
+				"transfer":    {},
+				"fallthrough": {},
+				"ignore":      {},
+			},
+		},
 	},
 
 	"errors": {
@@ -312,6 +335,20 @@ var plugins = map[string]map[string]plugin{
 				"tls_servername": {},
 				"policy":         {},
 				"health_check":   {},
+			},
+		},
+		"v3": plugin{
+			namedOptions: map[string]option{
+				"except":         {},
+				"force_tcp":      {},
+				"prefer_udp":     {},
+				"expire":         {},
+				"max_fails":      {},
+				"tls":            {},
+				"tls_servername": {},
+				"policy":         {},
+				"health_check":   {},
+				"max_concurrent": {}, // new option
 			},
 		},
 	},
