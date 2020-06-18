@@ -145,7 +145,7 @@ func TestMigrate(t *testing.T) {
 		{
 			name:         "Handle Kubernetes plugin deprecations",
 			fromVersion:  "1.4.0",
-			toVersion:    "1.6.7",
+			toVersion:    "1.7.0",
 			deprecations: true,
 			startCorefile: `.:53 {
     errors
