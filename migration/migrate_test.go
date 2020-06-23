@@ -14,6 +14,51 @@ func TestMigrate(t *testing.T) {
 		expectedCorefile string
 	}{
 		{
+
+			name:         "Add max_concurrent option to forward plugin",
+			fromVersion:  "1.6.2",
+			toVersion:    "1.7.0",
+			deprecations: true,
+			startCorefile: `.:53 {
+    errors
+    health {
+        lameduck 5s
+    }
+    ready
+    kubernetes cluster.local in-addr.arpa ip6.arpa {
+        pods insecure
+        fallthrough in-addr.arpa ip6.arpa
+    }
+    prometheus :9153
+    forward . /etc/resolv.conf
+    cache 30
+    loop
+    reload
+    loadbalance
+}
+`,
+			expectedCorefile: `.:53 {
+    errors
+    health {
+        lameduck 5s
+    }
+    ready
+    kubernetes cluster.local in-addr.arpa ip6.arpa {
+        pods insecure
+        fallthrough in-addr.arpa ip6.arpa
+    }
+    prometheus :9153
+    forward . /etc/resolv.conf {
+        max_concurrent 1000
+    }
+    cache 30
+    loop
+    reload
+    loadbalance
+}
+`,
+		},
+		{
 			name:         "replace/remove proxy options",
 			fromVersion:  "1.3.1",
 			toVersion:    "1.5.0",
@@ -174,7 +219,9 @@ func TestMigrate(t *testing.T) {
         fallthrough in-addr.arpa ip6.arpa
     }
     prometheus :9153
-    forward . /etc/resolv.conf
+    forward . /etc/resolv.conf {
+        max_concurrent 1000
+    }
     cache 30
     loop
     reload

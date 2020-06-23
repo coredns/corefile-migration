@@ -328,7 +328,13 @@ var plugins = map[string]map[string]plugin{
 				"tls_servername": {},
 				"policy":         {},
 				"health_check":   {},
-				"max_concurrent": {}, // new option
+				"max_concurrent": { // new option
+					status: newdefault,
+					add: func(c *corefile.Plugin) (*corefile.Plugin, error) {
+						return addOptionToPlugin(c, &corefile.Option{Name: "max_concurrent 1000"})
+					},
+					downAction: removeOption,
+				},
 			},
 		},
 	},

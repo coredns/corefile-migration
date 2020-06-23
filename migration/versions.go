@@ -45,7 +45,9 @@ var Versions = map[string]release{
         ttl 30
     }
     prometheus :9153
-    forward . *
+    forward . * {
+        max_concurrent 1000
+    }
     cache 30
     loop
     reload
