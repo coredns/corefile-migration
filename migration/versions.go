@@ -29,7 +29,29 @@ type release struct {
 
 // Versions holds a map of plugin/option migrations per CoreDNS release (since 1.1.4)
 var Versions = map[string]release{
+	"1.7.1": {
+		priorVersion:   "1.7.0",
+		dockerImageSHA: "4a6e0769130686518325b21b0c1d0688b54e7c79244d48e1b15634e98e40c6ef",
+		plugins: map[string]plugin{
+			"errors":       plugins["errors"]["v2"],
+			"log":          plugins["log"]["v1"],
+			"health":       plugins["health"]["v1"],
+			"ready":        {},
+			"autopath":     {},
+			"kubernetes":   plugins["kubernetes"]["v7"],
+			"k8s_external": plugins["k8s_external"]["v1"],
+			"prometheus":   {},
+			"forward":      plugins["forward"]["v3"],
+			"cache":        plugins["cache"]["v1"],
+			"loop":         {},
+			"reload":       {},
+			"loadbalance":  {},
+			"hosts":        plugins["hosts"]["v1"],
+			"rewrite":      plugins["rewrite"]["v2"],
+		},
+	},
 	"1.7.0": {
+		nextVersion:    "1.7.1",
 		priorVersion:   "1.6.9",
 		k8sReleases:    []string{"1.19"},
 		dockerImageSHA: "73ca82b4ce829766d4f1f10947c3a338888f876fbed0540dc849c89ff256e90c",
