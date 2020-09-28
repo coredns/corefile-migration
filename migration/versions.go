@@ -51,6 +51,7 @@ var Versions = map[string]release{
 		},
 	},
 	"1.7.0": {
+		nextVersion:    "1.7.1",
 		priorVersion:   "1.6.9",
 		k8sReleases:    []string{"1.19"},
 		dockerImageSHA: "73ca82b4ce829766d4f1f10947c3a338888f876fbed0540dc849c89ff256e90c",
