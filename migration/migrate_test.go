@@ -539,6 +539,25 @@ mystub-2.example.org {
 }
 `,
 		},
+		{
+			name:         "k8s transfer moved to plugin",
+			fromVersion:  "1.7.1",
+			toVersion:    "1.8.0",
+			deprecations: true,
+			startCorefile: `.:53 {
+    kubernetes cluster.local in-addr.arpa ip6.arpa {
+        transfer to 1.2.3.4 5.6.7.8
+    }
+}
+`,
+			expectedCorefile: `.:53 {
+    kubernetes cluster.local in-addr.arpa ip6.arpa
+    transfer cluster.local {
+        to 1.2.3.4 5.6.7.8
+    }
+}
+`,
+		},
 	}
 
 	for _, testCase := range testCases {
