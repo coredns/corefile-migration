@@ -424,7 +424,7 @@ var Versions = map[string]release{
 			"log":    plugins["log"]["v1"],
 			"health": plugins["health"]["v1"],
 			"ready": {
-				status: newdefault,
+				status: SevNewDefault,
 				add: func(c *corefile.Server) (*corefile.Server, error) {
 					return addToKubernetesServerBlocks(c, &corefile.Plugin{Name: "ready"})
 				},
@@ -681,7 +681,7 @@ var Versions = map[string]release{
 			"forward":    plugins["forward"]["v2"],
 			"cache":      plugins["cache"]["v1"],
 			"loop": {
-				status: newdefault,
+				status: SevNewDefault,
 				add: func(s *corefile.Server) (*corefile.Server, error) {
 					return addToForwardingServerBlocks(s, &corefile.Plugin{Name: "loop"})
 				},
