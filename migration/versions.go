@@ -32,7 +32,7 @@ type release struct {
 var Versions = map[string]release{
 	"1.8.0": {
 		priorVersion:   "1.7.1",
-		dockerImageSHA: "TBD",
+		dockerImageSHA: "cc8fb77bc2a0541949d1d9320a641b82fd392b0d3d8145469ca4709ae769980e",
 		plugins: map[string]plugin{
 			"errors":       plugins["errors"]["v2"],
 			"log":          plugins["log"]["v1"],
