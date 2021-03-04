@@ -55,7 +55,7 @@ var Versions = map[string]release{
 	"1.8.0": {
 		nextVersion:    "1.8.3", // CoreDNS 1.8.2 is not a valid version and 1.8.1 docker images were never released.
 		priorVersion:   "1.7.1",
-		k8sReleases:    []string{"1.19", "1.20"},
+		k8sReleases:    []string{"1.21"},
 		dockerImageSHA: "cc8fb77bc2a0541949d1d9320a641b82fd392b0d3d8145469ca4709ae769980e",
 		plugins: map[string]plugin{
 			"errors":       plugins["errors"]["v2"],
