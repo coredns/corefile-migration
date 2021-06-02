@@ -30,7 +30,30 @@ type release struct {
 
 // Versions holds a map of plugin/option migrations per CoreDNS release (since 1.1.4)
 var Versions = map[string]release{
+	"1.8.4": {
+		priorVersion:   "1.8.3",
+		dockerImageSHA: "6e5a02c21641597998b4be7cb5eb1e7b02c0d8d23cce4dd09f4682d463798890",
+		plugins: map[string]plugin{
+			"errors":       plugins["errors"]["v2"],
+			"log":          plugins["log"]["v1"],
+			"health":       plugins["health"]["v1"],
+			"ready":        {},
+			"autopath":     {},
+			"kubernetes":   plugins["kubernetes"]["v8"],
+			"k8s_external": plugins["k8s_external"]["v1"],
+			"prometheus":   {},
+			"forward":      plugins["forward"]["v3"],
+			"cache":        plugins["cache"]["v1"],
+			"loop":         {},
+			"reload":       {},
+			"loadbalance":  {},
+			"hosts":        plugins["hosts"]["v1"],
+			"rewrite":      plugins["rewrite"]["v2"],
+			"transfer":     plugins["transfer"]["v1"],
+		},
+	},
 	"1.8.3": {
+		nextVersion:    "1.8.4",
 		priorVersion:   "1.8.0", // CoreDNS 1.8.2 is not a valid version and 1.8.1 docker images were never released.
 		dockerImageSHA: "642ff9910da6ea9a8624b0234eef52af9ca75ecbec474c5507cb096bdfbae4e5",
 		plugins: map[string]plugin{
