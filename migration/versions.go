@@ -30,7 +30,53 @@ type release struct {
 
 // Versions holds a map of plugin/option migrations per CoreDNS release (since 1.1.4)
 var Versions = map[string]release{
+	"1.9.0": {
+		priorVersion:   "1.8.7",
+		dockerImageSHA: "0f101fabf4b63883d4529435f75b1e8816dcc8915e8fa7d28aa6e50a15e9ea6a",
+		plugins: map[string]plugin{
+			"errors":       plugins["errors"]["v2"],
+			"log":          plugins["log"]["v1"],
+			"health":       plugins["health"]["v1"],
+			"ready":        {},
+			"autopath":     {},
+			"kubernetes":   plugins["kubernetes"]["v8"],
+			"k8s_external": plugins["k8s_external"]["v1"],
+			"prometheus":   {},
+			"forward":      plugins["forward"]["v3"],
+			"cache":        plugins["cache"]["v1"],
+			"loop":         {},
+			"reload":       {},
+			"loadbalance":  {},
+			"hosts":        plugins["hosts"]["v1"],
+			"rewrite":      plugins["rewrite"]["v2"],
+			"transfer":     plugins["transfer"]["v1"],
+		},
+	},
+	"1.8.7": {
+		nextVersion:    "1.9.0",
+		priorVersion:   "1.8.6",
+		dockerImageSHA: "58508c172b14716350dc5185baefd78265a703514281d309d1d54aa1b721ad68",
+		plugins: map[string]plugin{
+			"errors":       plugins["errors"]["v2"],
+			"log":          plugins["log"]["v1"],
+			"health":       plugins["health"]["v1"],
+			"ready":        {},
+			"autopath":     {},
+			"kubernetes":   plugins["kubernetes"]["v8"],
+			"k8s_external": plugins["k8s_external"]["v1"],
+			"prometheus":   {},
+			"forward":      plugins["forward"]["v3"],
+			"cache":        plugins["cache"]["v1"],
+			"loop":         {},
+			"reload":       {},
+			"loadbalance":  {},
+			"hosts":        plugins["hosts"]["v1"],
+			"rewrite":      plugins["rewrite"]["v2"],
+			"transfer":     plugins["transfer"]["v1"],
+		},
+	},
 	"1.8.6": {
+		nextVersion:    "1.8.7",
 		priorVersion:   "1.8.5",
 		dockerImageSHA: "5b6ec0d6de9baaf3e92d0f66cd96a25b9edbce8716f5f15dcd1a616b3abd590e",
 		plugins: map[string]plugin{
