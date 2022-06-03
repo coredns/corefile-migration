@@ -32,7 +32,7 @@ type release struct {
 var Versions = map[string]release{
 	"1.9.3": {
 		priorVersion:   "1.9.2",
-		dockerImageSHA: "TODO when released",
+		dockerImageSHA: "8e352a029d304ca7431c6507b56800636c321cb52289686a581ab70aaa8a2e2a",
 		plugins: map[string]plugin{
 			"errors":       plugins["errors"]["v3"], // stacktrace option added
 			"log":          plugins["log"]["v1"],
