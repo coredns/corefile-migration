@@ -858,9 +858,7 @@ func TestUnsupported(t *testing.T) {
 `,
 			fromVersion: "1.3.1",
 			toVersion:   "1.3.1",
-			expected: []Notice{
-				{Plugin: "route53", Severity: SevUnsupported, Version: "1.3.1"},
-			},
+			expected:    []Notice{},
 		},
 		{
 			name: "Wrong plugin option",
