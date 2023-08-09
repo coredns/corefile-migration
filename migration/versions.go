@@ -30,10 +30,16 @@ type release struct {
 
 // Versions holds a map of plugin/option migrations per CoreDNS release (since 1.1.4)
 var Versions = map[string]release{
+	"1.11.0": {
+		priorVersion:   "1.10.1",
+		dockerImageSHA: "cc3ebb05fbdba439d2d69813f162aa204b027098c8244fb3156e6e7c0f31c548",
+		plugins: 		plugins_1_11_0,
+	},
 	"1.10.1": {
+		nextVersion:    "1.11.0",
 		priorVersion:   "1.10.0",
 		dockerImageSHA: "a0ead06651cf580044aeb0a0feba63591858fb2e43ade8c9dea45a6a89ae7e5e",
-		plugins:        plugins_1_9_3,
+		plugins:        plugins_1_10_1,
 	},
 	"1.10.0": {
 		nextVersion:    "1.10.1",
@@ -743,6 +749,44 @@ var Versions = map[string]release{
     cache 30
     reload
 }`},
+}
+
+var plugins_1_11_0 = map[string]plugin{
+	"errors":       plugins["errors"]["v3"],
+	"log":          plugins["log"]["v1"],
+	"health":       plugins["health"]["v1"],
+	"ready":        {},
+	"autopath":     {},
+	"kubernetes":   plugins["kubernetes"]["v8"],
+	"k8s_external": plugins["k8s_external"]["v2"], //add fallthrough option
+	"prometheus":   {},
+	"forward":      plugins["forward"]["v3"],
+	"cache":        plugins["cache"]["v2"],
+	"loop":         {},
+	"reload":       {},
+	"loadbalance":  {},
+	"hosts":        plugins["hosts"]["v1"],
+	"rewrite":      plugins["rewrite"]["v3"], // add cname_target option
+	"transfer":     plugins["transfer"]["v1"],
+}
+
+var plugins_1_10_1 = map[string]plugin{
+	"errors":       plugins["errors"]["v3"],
+	"log":          plugins["log"]["v1"],
+	"health":       plugins["health"]["v1"],
+	"ready":        {},
+	"autopath":     {},
+	"kubernetes":   plugins["kubernetes"]["v8"],
+	"k8s_external": plugins["k8s_external"]["v1"],
+	"prometheus":   {},
+	"forward":      plugins["forward"]["v3"],
+	"cache":        plugins["cache"]["v2"], // add keepttl option
+	"loop":         {},
+	"reload":       {},
+	"loadbalance":  {},
+	"hosts":        plugins["hosts"]["v1"],
+	"rewrite":      plugins["rewrite"]["v2"],
+	"transfer":     plugins["transfer"]["v1"],
 }
 
 var plugins_1_9_3 = map[string]plugin{
