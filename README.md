@@ -1,4 +1,4 @@
-<a href="https://codecov.io/github/coredns/corefile-migration?branch=master"><img alt="Coverage status"src="https://img.shields.io/codecov/c/github/coredns/corefile-migration/master.svg"></a>
+<p align="center"><a href="https://codecov.io/github/coredns/corefile-migration?branch=master"><img alt="Coverage status"src="https://img.shields.io/codecov/c/github/coredns/corefile-migration/master.svg"></a>
 <a href="https://goreportcard.com/report/coredns/corefile-migration"><img alt="Go Report Card" src="https://goreportcard.com/badge/coredns/corefile-migration" /></a></p>
 
 # CoreDNS Corefile Migration Tools
