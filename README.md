@@ -1,4 +1,3 @@
-<p align="center"><a href="https://travis-ci.org/coredns/corefile-migration"><img alt="Build Status" src="https://img.shields.io/travis/coredns/corefile-migration/master.svg?label=build"></a>
 <a href="https://codecov.io/github/coredns/corefile-migration?branch=master"><img alt="Coverage status"src="https://img.shields.io/codecov/c/github/coredns/corefile-migration/master.svg"></a>
 <a href="https://goreportcard.com/report/coredns/corefile-migration"><img alt="Go Report Card" src="https://goreportcard.com/badge/coredns/corefile-migration" /></a></p>
 
