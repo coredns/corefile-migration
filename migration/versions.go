@@ -69,13 +69,13 @@ var Versions = map[string]release{
 		nextVersion:    "1.10.1",
 		priorVersion:   "1.9.4",
 		dockerImageSHA: "017727efcfeb7d053af68e51436ce8e65edbc6ca573720afb4f79c8594036955",
-		plugins:        plugins_1_9_3,
+		plugins:        plugins_1_9_4,
 	},
 	"1.9.4": {
 		nextVersion:    "1.10.0",
 		priorVersion:   "1.9.3",
 		dockerImageSHA: "b82e294de6be763f73ae71266c8f5466e7e03c69f3a1de96efd570284d35bb18",
-		plugins:        plugins_1_9_3,
+		plugins:        plugins_1_9_4,
 	},
 	"1.9.3": {
 		nextVersion:    "1.9.4",
@@ -785,7 +785,7 @@ var plugins_1_11_4 = map[string]plugin{
 	"k8s_external": plugins["k8s_external"]["v2"],
 	"prometheus":   {},
 	"forward":      plugins["forward"]["v4"], // add next option
-	"cache":        plugins["cache"]["v2"],
+	"cache":        plugins["cache"]["v4"],
 	"loop":         {},
 	"reload":       {},
 	"loadbalance":  {},
@@ -804,7 +804,7 @@ var plugins_1_11_0 = map[string]plugin{
 	"k8s_external": plugins["k8s_external"]["v2"], //add fallthrough option
 	"prometheus":   {},
 	"forward":      plugins["forward"]["v3"],
-	"cache":        plugins["cache"]["v2"],
+	"cache":        plugins["cache"]["v4"],
 	"loop":         {},
 	"reload":       {},
 	"loadbalance":  {},
@@ -823,7 +823,26 @@ var plugins_1_10_1 = map[string]plugin{
 	"k8s_external": plugins["k8s_external"]["v1"],
 	"prometheus":   {},
 	"forward":      plugins["forward"]["v3"],
-	"cache":        plugins["cache"]["v2"], // add keepttl option
+	"cache":        plugins["cache"]["v4"], // add keepttl option
+	"loop":         {},
+	"reload":       {},
+	"loadbalance":  {},
+	"hosts":        plugins["hosts"]["v1"],
+	"rewrite":      plugins["rewrite"]["v2"],
+	"transfer":     plugins["transfer"]["v1"],
+}
+
+var plugins_1_9_4 = map[string]plugin{
+	"errors":       plugins["errors"]["v3"], // stacktrace option added
+	"log":          plugins["log"]["v1"],
+	"health":       plugins["health"]["v1"],
+	"ready":        {},
+	"autopath":     {},
+	"kubernetes":   plugins["kubernetes"]["v8"],
+	"k8s_external": plugins["k8s_external"]["v1"],
+	"prometheus":   {},
+	"forward":      plugins["forward"]["v3"],
+	"cache":        plugins["cache"]["v3"], // add disable and servfail options
 	"loop":         {},
 	"reload":       {},
 	"loadbalance":  {},

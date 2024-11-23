@@ -352,6 +352,18 @@ var plugins = map[string]map[string]plugin{
 				"denial":      {},
 				"prefetch":    {},
 				"serve_stale": {},
+				"disable":     {}, // v1.9.4 new option
+				"servfail":    {}, // v1.9.4 new option
+			},
+		},
+		"v4": plugin{
+			namedOptions: map[string]option{
+				"success":     {},
+				"denial":      {},
+				"prefetch":    {},
+				"serve_stale": {},
+				"disable":     {},
+				"servfail":    {},
 				"keepttl":     {}, // new option
 			},
 		},
