@@ -790,7 +790,7 @@ var plugins_1_12_0 = map[string]plugin{
 	"kubernetes":   plugins["kubernetes"]["v8"],
 	"k8s_external": plugins["k8s_external"]["v2"],
 	"prometheus":   {},
-	"forward":      plugins["forward"]["v4"], // add next option
+	"forward":      plugins["forward"]["v5"], // add failfast_all_unhealthy_upstreams option
 	"cache":        plugins["cache"]["v4"],
 	"loop":         {},
 	"reload":       {},
